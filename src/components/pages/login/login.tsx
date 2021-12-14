@@ -26,7 +26,7 @@ const Login:FC = () => {
             </div>
           </form>
         </div>
-        <Footer />
+        <Footer main={false}/>
       </div>
     </>
   );

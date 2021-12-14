@@ -3,12 +3,13 @@ import Film from 'src/types/film';
 import FilmCard from '../film-card/film-card'
 
 interface Props {
-  filmIds: number[],
+  ids: number[],
 };
 
-const FilmCardList:FC<Props> = ({filmIds}) => {
+const FilmCardList:FC<Props> = ({ids}) => {
+
   return (<div className="catalog__movies-list">
-            {filmIds.map((id) => <FilmCard id={id} key={id} />)}
+            {ids.map((id) => <FilmCard id={id} key={id} />)}
           </div>
   )
 };

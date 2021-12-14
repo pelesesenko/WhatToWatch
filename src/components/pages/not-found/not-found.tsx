@@ -9,7 +9,7 @@ const NotFound:FC = () => {
     <>
       <Header page={Pages.NOT_FOUND} />
       <h1>Page not found</h1>
-      <Footer />
+      <Footer main={false} />
     </>
   );
 };

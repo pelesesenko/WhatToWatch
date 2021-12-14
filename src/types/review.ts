@@ -1,4 +1,4 @@
-export interface CommentGet {
+export interface ReviewGet {
   id: number,
   user: {
     id: number,
@@ -9,7 +9,7 @@ export interface CommentGet {
   date: string
 }
 
-export interface CommentPost {
+export interface ReviewPost {
   rating: number,
   comment: string
 }
