@@ -11,6 +11,9 @@ export const ActionTypes = {
   postFilmReview: 'film-info/post-review',
   fetchFavFilms: 'fav-films/fetch-fav-films',
   postFavStatus: 'fav-films/post-fav-status',
+  fetchAuth: 'user/fetch-authorization',
+  login: 'user/login',
+  logout: 'user/logout',
 } as const;
 
 export const filmsRecieved = createAction<Film[]>(ActionTypes.filmsRecieved);

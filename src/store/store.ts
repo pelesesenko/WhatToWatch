@@ -6,13 +6,15 @@ import {configureStore} from '@reduxjs/toolkit';
 import filmsReducer from './slices/films-slice';
 import filmInfoReducer from './slices/film-info-slice';
 import favFilmsReduser from './slices/fav-films-slice';
+import userReduser from './slices/user-slice';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 
 const store = configureStore({
   reducer: {
     films: filmsReducer,
     filmInfo: filmInfoReducer,
-    favFilms: favFilmsReduser
+    favFilms: favFilmsReduser,
+    user: userReduser,
   },
 });
 

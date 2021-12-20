@@ -28,7 +28,7 @@ export const fetchFilmReviews = createAsyncThunk(ActionTypes.fetchFilmReviews,
 export const postFilmReview = createAsyncThunk(ActionTypes.postFilmReview,
   async (data: {id:number, review: ReviewPost}) => {
   // const response = await client.get('/fakeApi/users')
-  return {[data.id]: mockComments[data.id]}; //response.data
+  return {[data.id]: [...mockComments[data.id], data.review]}; //response.data
 });
 
 const filmInfoSlice = createSlice({

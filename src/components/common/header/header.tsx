@@ -1,6 +1,8 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
-import {Pages, AppPaths} from '../../../constants';
+import {Pages, AppPaths, AuthorizationStatuses} from '../../../constants';
+import { login, logout, selectAuthStatus } from '../../../store/slices/user-slice';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
 
 interface HeaderConfig {
   [key: string]: {
@@ -45,8 +47,9 @@ interface Props {
 }
 
 const Header:FC<Props> = ({page, filmName}) => {
-
-  const auth = 1;
+  const dispatch = useAppDispatch();
+  const authStatus = useAppSelector(selectAuthStatus);
+  const onLogout = () => dispatch(logout()) //1;
 
   return (
     <header className={`page-header${config[page].addClassName}`}>
@@ -76,13 +79,24 @@ const Header:FC<Props> = ({page, filmName}) => {
       </nav>}
       {config[page].title && <h1 className="page-title user-page__title">{config[page].title}</h1> }
       {config[page].showUserBlock &&
-      <div className="user-block">
-        {auth
-          ? <div className="user-block__avatar">
-              <Link to={AppPaths.MY_LIST}>
-                <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
-              </Link>
-            </div>
+      <div className="user-block" style={{display: 'flex'}} >
+        {authStatus === AuthorizationStatuses.authorized
+          ?
+          <>
+            <div className="user-block__avatar" >
+                <Link to={AppPaths.MY_LIST}>
+                  <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
+                </Link>
+              </div>
+              <button onClick={onLogout} className="button"
+                style={{marginLeft: `30px`, backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none"  stroke="#444" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1={21} y1={12} x2={9} y2={12} />
+              </svg>
+            </button>
+          </>
           : <Link to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>}
       </div>}
     </header>

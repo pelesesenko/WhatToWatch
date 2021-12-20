@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import { Link } from 'react-router-dom';
 import { AppPaths, Pages } from '../../../../constants';
 import Film from '../../../../types/film';
+import { makeLink } from '../../../../utilites';
 import Header from '../../../common/header/header';
 import MovieButtons from '../../../common/movie-buttons';
 import FilmInfo from './film-info';
@@ -29,7 +30,7 @@ const FilmContent:FC<Props> = ({film}) => {
             </p>
             <div className="movie-card__buttons">
               <MovieButtons id={film.id} favStatus={film.isFavorite} />
-              <Link to={AppPaths.ADD_REVIEW[0] + film.id + AppPaths.ADD_REVIEW[1]} className="btn movie-card__button">Add review</Link>
+              <Link to={makeLink(AppPaths.ADD_REVIEW, film.id)} className="btn movie-card__button">Add review</Link>
             </div>
           </div>
         </div>

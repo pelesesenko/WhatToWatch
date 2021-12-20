@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppPaths, Pages } from '../../constants';
 
 interface Props {
-  main: boolean,
+  main?: true,
 }
 
 const Footer:FC<Props> = ({main}) => {

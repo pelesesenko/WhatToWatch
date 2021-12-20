@@ -1,8 +1,5 @@
 import React, {FC} from 'react';
-import { fetchFilmReviews, selectFilmReviews } from '../../../../store/slices/film-info-slice';
-import { useAppDispatch, useAppSelector } from '../../../../store/store';
 import { ReviewGet } from '../../../../types/review';
-import Film from '../../../../types/film';
 import FilmReview from './film-review';
 
 interface Props{

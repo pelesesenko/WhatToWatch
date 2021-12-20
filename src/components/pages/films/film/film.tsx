@@ -1,5 +1,4 @@
 import React, {FC} from 'react';
-import Header from '../../../common/header/header';
 import {AppPaths, LoadingStatuses, Pages} from '../../../../constants';
 import Footer from '../../../common/footer';
 
@@ -30,7 +29,7 @@ const Film:FC = () => {
     if(film === undefined) {
       dispatch(fetchFilmById(id))
     }
-  }, [film, id])
+  }, [film, id]);
 
   return (
     <>
@@ -45,7 +44,7 @@ const Film:FC = () => {
            ? <FilmsLikeThis genre={film.genre} id={id} />
            : <h1>Loading...</h1>}
         </section>
-        <Footer main={false}/>
+        <Footer />
       </div>
     </>
   );

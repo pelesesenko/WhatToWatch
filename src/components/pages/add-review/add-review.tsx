@@ -1,68 +1,91 @@
-import React, {FC} from 'react';
+import React, {FC, Fragment} from 'react';
 import Header from '../../common/header/header';
 import {AppPaths, Pages} from '../../../constants';
 import { useParams } from 'react-router-dom';
 import { checkIdParam } from '../../../utilites';
 import history from '../../../browser-history';
+import { useAppDispatch, useAppSelector } from '../../../store/store';
+import { fetchFilmById, selectFilmById } from '../../../store/slices/films-slice';
+import {SubmitHandler, useForm} from 'react-hook-form';
+import { postFilmReview } from '../../../store/slices/film-info-slice';
 
-interface UrlParams{
-  id: string
+interface UrlParams {
+  id: string;
 }
 
+interface Inputs {
+  rating: number;
+  comment: string;
+}
 
 const AddReview:FC = () => {
 
+  const dispatch = useAppDispatch();
   const {id: param} = useParams<UrlParams>();
+
   if(!checkIdParam(param)) history.push(AppPaths.NOT_FOUND);
+
   const id = +param;
+  const film = useAppSelector((state) => selectFilmById(state, id));
+
+  React.useEffect(() => {
+    if(film === undefined) {
+      dispatch(fetchFilmById(id))
+    }
+  }, [film, id]);
+
+  const {register, handleSubmit, formState : {errors}} = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (review) => {
+    dispatch(postFilmReview({id, review}));
+  }
+
   return (
     <>
-      <section className="movie-card movie-card--full">
-        <div className="movie-card__header">
-          <div className="movie-card__bg">
-            <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel" />
-          </div>
-          <h1 className="visually-hidden">WTW</h1>
-          <Header page={Pages.ADD_REVIEW} filmName={`The Grand Budapest Hotel`} />
-          <div className="movie-card__poster movie-card__poster--small">
-            <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width={218} height={327} />
-          </div>
-        </div>
-        <div className="add-review">
-          <form action="#" className="add-review__form">
-            <div className="rating">
-              <div className="rating__stars">
-                <input className="rating__input" id="star-1" type="radio" name="rating" defaultValue={1} />
-                <label className="rating__label" htmlFor="star-1">Rating 1</label>
-                <input className="rating__input" id="star-2" type="radio" name="rating" defaultValue={2} />
-                <label className="rating__label" htmlFor="star-2">Rating 2</label>
-                <input className="rating__input" id="star-3" type="radio" name="rating" defaultValue={3} defaultChecked />
-                <label className="rating__label" htmlFor="star-3">Rating 3</label>
-                <input className="rating__input" id="star-4" type="radio" name="rating" defaultValue={4} />
-                <label className="rating__label" htmlFor="star-4">Rating 4</label>
-                <input className="rating__input" id="star-5" type="radio" name="rating" defaultValue={5} />
-                <label className="rating__label" htmlFor="star-5">Rating 5</label>
-                <input className="rating__input" id="star-6" type="radio" name="rating" defaultValue={6} />
-                <label className="rating__label" htmlFor="star-6">Rating 6</label>
-                <input className="rating__input" id="star-7" type="radio" name="rating" defaultValue={7} />
-                <label className="rating__label" htmlFor="star-7">Rating 7</label>
-                <input className="rating__input" id="star-8" type="radio" name="rating" defaultValue={8} defaultChecked />
-                <label className="rating__label" htmlFor="star-8">Rating 8</label>
-                <input className="rating__input" id="star-9" type="radio" name="rating" defaultValue={9} />
-                <label className="rating__label" htmlFor="star-9">Rating 9</label>
-                <input className="rating__input" id="star-10" type="radio" name="rating" defaultValue={10} />
-                <label className="rating__label" htmlFor="star-10">Rating 10</label>
-              </div>
+      {!film
+        ? <h1>Loading...</h1>
+        :
+          <section className="movie-card movie-card--full">
+          <div className="movie-card__header">
+            <div className="movie-card__bg">
+              <img src={film.backgroundImage} alt={film.name} />
             </div>
-            <div className="add-review__text">
-              <textarea className="add-review__textarea" name="review-text" id="review-text" placeholder="Review text" defaultValue={``} />
-              <div className="add-review__submit">
-                <button className="add-review__btn" type="submit">Post</button>
-              </div>
+            <h1 className="visually-hidden">WTW</h1>
+            <Header page={Pages.ADD_REVIEW} filmName={film.name} />
+            <div className="movie-card__poster movie-card__poster--small">
+              <img src={film.posterImage} alt={`${film.name} poster`} width={218} height={327} />
             </div>
-          </form>
-        </div>
-      </section>
+          </div>
+          <div className="add-review">
+            <form onSubmit={handleSubmit(onSubmit)} className="add-review__form">
+              <div className="rating">
+                {errors.rating && <i style={{color: 'red'}}>Please select a rating</i>}
+                <div className="rating__stars">
+                  {Array(11).fill(true).map((_, i) => (
+                    <Fragment key={i} >
+                      <input className="rating__input" id={`star-${i}`} type="radio"
+                        {...register('rating', {min: 1})}
+                        value={i} defaultChecked={i === 0}/>
+                      <label className="rating__label" htmlFor={`star-${i}`}
+                        style={{display: `${i === 0 ? 'none' : ''}`}}>{`Rating ${i}`}
+                      </label>
+                    </Fragment>
+                  ))}
+                </div>
+
+              </div>
+              <div className="add-review__text">
+                {errors.comment && <i style={{color: 'red'}}>Your comment must be 50 - 400 characters long</i>}
+                <textarea className="add-review__textarea" id="review-text" placeholder="Review text"
+                  {...register('comment', {minLength: 50, maxLength: 400, required: true})}
+                  defaultValue={``} />
+                <div className="add-review__submit">
+                  <button className="add-review__btn" type="submit">Post</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </section>}
     </>
   );
 };

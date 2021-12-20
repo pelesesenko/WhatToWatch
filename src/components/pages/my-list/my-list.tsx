@@ -26,7 +26,7 @@ const MyList:FC = () => {
             ? <h1>Loading...</h1>
             : <FilmCardList ids={ids}/> }
         </section>
-        <Footer main={false}/>
+        <Footer />
       </div>
     </>
   );

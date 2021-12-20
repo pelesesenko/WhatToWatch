@@ -3,7 +3,7 @@ export const AppPaths = {
   LOGIN: `/login`,
   MY_LIST: `/myList`,
   FILM: `/films/:id`,
-  ADD_REVIEW: [`/films/`, `/review`],
+  ADD_REVIEW: `/films/:id/review`,
   PLAYER: `/player/:id`,
   NOT_FOUND: `/not-found`
 } as const;
@@ -11,7 +11,7 @@ export const AppPaths = {
 export const Pages = {
   MAIN: `main`,
   LOGIN: `login`,
-  MY_LIST: `myList`,
+  MY_LIST: `my-list`,
   FILM: `film`,
   ADD_REVIEW: `add-review`,
   PLAYER: `player`,
@@ -27,6 +27,11 @@ export const LoadingStatuses = {
   pending: 'pending',
   fulfilled: 'fulfilled',
   rejected: 'rejected',
+} as const;
+
+export const AuthorizationStatuses = {
+  authorized: 'authorized',
+  notAuthorized: 'not-authorized',
 } as const;
 
 export const FilmInfoTabs = [

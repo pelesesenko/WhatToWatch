@@ -1,6 +1,9 @@
 import React, {FC} from 'react';
 import { postFavStatus } from '../../store/slices/fav-films-slice';
 import { useAppDispatch } from '../../store/store';
+import history from '../../browser-history';
+import { AppPaths } from '../../constants';
+import { makeLink } from '../../utilites';
 
 
 interface Props {
@@ -11,10 +14,11 @@ interface Props {
 const MovieButtons:FC<Props> = ({id, favStatus}) => {
 
   const dispatch = useAppDispatch();
-  const handleFavClick = () => dispatch(postFavStatus({id, status: !favStatus}))
+  const handleFavClick = () => dispatch(postFavStatus({id, status: !favStatus}));
+  const handlePlayClick = () => history.push(makeLink(AppPaths.PLAYER, id));
   return (
     <>
-      <button className="btn btn--play movie-card__button" type="button">
+      <button onClick={handlePlayClick}className="btn btn--play movie-card__button" type="button">
         <svg viewBox="0 0 19 19" width={19} height={19}>
           <use xlinkHref="#play-s" />
         </svg>

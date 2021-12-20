@@ -40,7 +40,7 @@ export const fetchFilms = createAsyncThunk(ActionTypes.fetchFilms,
 export const fetchFilmById = createAsyncThunk(ActionTypes.fetchFilmById,
   async (id: number) => {
   // const response = await client.get('/fakeApi/users')
-  return mockFilms[id]; //response.data
+  return mockFilms[--id]; //response.data
 });
 export const fetchFilmPromo = createAsyncThunk(ActionTypes.fetchFilmPromo,
   async () => {
