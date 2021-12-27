@@ -2,12 +2,17 @@ import {
   createSlice,
   createAsyncThunk,
   PayloadAction,
+  nanoid,
 } from '@reduxjs/toolkit';
-import { FilmInfoTabs } from '../../constants';
+import { AppPaths, FilmInfoTabs } from '../../constants';
 import { ReviewGet, ReviewPost } from '../../types/review';
 import { ActionTypes } from '../extra-actions';
 import { mockComments } from '../mock';
 import { RootState } from '../store';
+import history from '../../browser-history'
+import { makeLink } from '../../utilites';
+import { reviewsApi } from '../../api/api';
+import { handleError, handleSuccess } from '../thunk-error-handlers';
 
 type InfoTabs = typeof FilmInfoTabs[number];
 interface State{
@@ -21,14 +26,31 @@ const initialState: State = {
 }
 
 export const fetchFilmReviews = createAsyncThunk(ActionTypes.fetchFilmReviews,
-  async (id: number) => {
-  // const response = await client.get('/fakeApi/users')
-  return {[id]: mockComments[id]}; //response.data
+  async (id: number, {dispatch}) => {
+    try {
+      const response = await reviewsApi.getById(id);
+      handleSuccess(dispatch);
+      return {[id]: response.data};
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 export const postFilmReview = createAsyncThunk(ActionTypes.postFilmReview,
-  async (data: {id:number, review: ReviewPost}) => {
-  // const response = await client.get('/fakeApi/users')
-  return {[data.id]: [...mockComments[data.id], data.review]}; //response.data
+  async (data: {id:number, review: ReviewPost}, {dispatch}) => {
+    try {
+      const response = await reviewsApi.postById(data.review, data.id);
+      if(response.status === 200) {
+        history.push(makeLink(AppPaths.FILM, data.id));
+      }
+      handleSuccess(dispatch);
+      return {[data.id]: response.data};
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 const filmInfoSlice = createSlice({

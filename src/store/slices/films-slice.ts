@@ -10,9 +10,10 @@ import {LIST_SIZE, LoadingStatuses} from '../../constants';
 import type Film from '../../types/film';
 import {GENERAL_CATALOG_TAB} from '../../constants';
 import {RootState} from '../store';
-
-import {mockFilms} from '../mock';
 import { ActionTypes, filmsRecieved } from '../extra-actions';
+import { filmsApi } from '../../api/api';
+import { handleError, handleSuccess } from '../thunk-error-handlers';
+import { AxiosError } from 'axios';
 
 interface ExtraState {
   status: keyof typeof LoadingStatuses,
@@ -33,19 +34,40 @@ const initialState: ExtraState & EntityState<Film> = filmsAdapter.getInitialStat
 });
 
 export const fetchFilms = createAsyncThunk(ActionTypes.fetchFilms,
-  async () => {
-  // const response = await client.get('/fakeApi/users')
-  return mockFilms; //response.data
+  async (_, {dispatch}) => {
+    try {
+      const response = await filmsApi.get();
+      handleSuccess(dispatch);
+      return response.data
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err
+    }
 });
 export const fetchFilmById = createAsyncThunk(ActionTypes.fetchFilmById,
-  async (id: number) => {
-  // const response = await client.get('/fakeApi/users')
-  return mockFilms[--id]; //response.data
+  async (id: number, {dispatch}) => {
+    try {
+      const response = await filmsApi.getById(id);
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 export const fetchFilmPromo = createAsyncThunk(ActionTypes.fetchFilmPromo,
-  async () => {
-  // const response = await client.get('/fakeApi/users')
-  return mockFilms[2]; //response.data
+  async (_, {dispatch}) => {
+    try {
+      const response = await filmsApi.getPromo();
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 const filmsSlice = createSlice({

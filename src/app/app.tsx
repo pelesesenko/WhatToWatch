@@ -9,10 +9,14 @@ import NotFound from '../components/pages/not-found/not-found';
 import FilmsContainer from '../components/pages/films/films-container';
 import browserHistory from '../browser-history';
 import { fetchAuth } from '../store/slices/user-slice';
-import { useAppDispatch } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { selectIsServerAvailable } from '../store/slices/server-slice';
+import ServerError from '../components/common/server-error';
+import PrivateRoute from '../components/common/private-route/private-route';
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
+  const isServerAvailable = useAppSelector(selectIsServerAvailable)
 
   React.useEffect(() =>{
     dispatch(fetchAuth())
@@ -20,13 +24,14 @@ const App: FC = () => {
 
   return (
     <BrowserRouter history={browserHistory}>
+      {!isServerAvailable && <ServerError />}
       <Switch>
+        <PrivateRoute path={AppPaths.MY_LIST} exact render={()=> <MyList />}/>
+        <PrivateRoute path={AppPaths.ADD_REVIEW} exact render={()=> <AddReview />} />
         <Route path={AppPaths.LOGIN} exact render={()=> <Login />}/>
-        <Route path={AppPaths.MY_LIST} exact render={()=> <MyList />}/>
         <Route path={AppPaths.PLAYER} exact render={()=> <Player />}/>
-        <Route path={AppPaths.ADD_REVIEW} exact component={AddReview}/>
         <Route path={AppPaths.NOT_FOUND} exact render={()=> <NotFound />}/>
-        <Route path={AppPaths.MAIN} component={FilmsContainer}/>
+        <Route path={AppPaths.MAIN} component={FilmsContainer} />
         <Route>
           <NotFound />
         </Route>

@@ -2,11 +2,12 @@ import {
   createSlice,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
+import { userApi } from '../../api/api';
 import { AuthorizationStatuses } from '../../constants';
 import { UserGet, UserPost } from '../../types/user';
-import { ActionTypes } from '../extra-actions';
-import { mockUser } from '../mock';
+import { ActionTypes, authorizationDenied } from '../extra-actions';
 import { RootState } from '../store';
+import { handleError, handleSuccess } from '../thunk-error-handlers';
 
 interface State{
   status: typeof AuthorizationStatuses[keyof typeof AuthorizationStatuses] | null,
@@ -19,21 +20,44 @@ const initialState: State = {
 }
 
 export const fetchAuth = createAsyncThunk(ActionTypes.fetchAuth,
-  async () => {
-  // const response = await client.get('/fakeApi/users')
-  return mockUser; //response.data
+
+  async (_, {dispatch}) => {
+    try {
+      const response = await userApi.getUser();
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 export const login = createAsyncThunk(ActionTypes.login,
-  async (data: UserPost) => {
-  // const response = await client.get('/fakeApi/users')
-  return mockUser; //response.data
+  async (data: UserPost, {dispatch}) => {
+    try {
+      const response = await userApi.post(data);
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 export const logout = createAsyncThunk(ActionTypes.logout,
-  async () => {
-  // const response = await client.get('/fakeApi/users')
-  //return null; //response.data
+  async (_, {dispatch}) => {
+    try {
+      const response = await userApi.logout();
+      dispatch(authorizationDenied());
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 
@@ -58,6 +82,10 @@ const userSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.status = AuthorizationStatuses.notAuthorized;
         state.user= null;
+      })
+      .addCase(authorizationDenied, (state) => {
+        state.status = AuthorizationStatuses.notAuthorized;
+        state.user = null;
       })
   }
 });

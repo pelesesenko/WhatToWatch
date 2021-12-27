@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
 import {Pages, AppPaths, AuthorizationStatuses} from '../../../constants';
-import { login, logout, selectAuthStatus } from '../../../store/slices/user-slice';
+import { login, logout, selectAuthStatus, selectUser } from '../../../store/slices/user-slice';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 
 interface HeaderConfig {
@@ -49,6 +49,7 @@ interface Props {
 const Header:FC<Props> = ({page, filmName}) => {
   const dispatch = useAppDispatch();
   const authStatus = useAppSelector(selectAuthStatus);
+  const user = useAppSelector(selectUser);
   const onLogout = () => dispatch(logout()) //1;
 
   return (
@@ -85,7 +86,7 @@ const Header:FC<Props> = ({page, filmName}) => {
           <>
             <div className="user-block__avatar" >
                 <Link to={AppPaths.MY_LIST}>
-                  <img src="img/avatar.jpg" alt="User avatar" width={63} height={63} />
+                  <img src={user?.avatarUrl} alt="User avatar" width={63} height={63} />
                 </Link>
               </div>
               <button onClick={onLogout} className="button"

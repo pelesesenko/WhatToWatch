@@ -1,12 +1,15 @@
 import React, {FC} from 'react';
 import Header from '../../common/header/header';
-import {LoadingStatuses, Pages} from '../../../constants';
+import {AppPaths, AuthorizationStatuses, LoadingStatuses, Pages} from '../../../constants';
 import Footer from '../../common/footer';
 import FilmCardList from '../../common/film-card-list/film-card-list';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { fetchFavFilms, selectFavFilmsIds, selectFavFilmsStatus } from '../../../store/slices/fav-films-slice';
+import { selectAuthStatus } from '../../../store/slices/user-slice';
+import { Redirect } from 'react-router-dom';
 
 const MyList:FC = () => {
+  const authStatus = useAppSelector(selectAuthStatus);
   const loadingStatus = useAppSelector(selectFavFilmsStatus);
   const ids = useAppSelector(selectFavFilmsIds);
   const dispatch = useAppDispatch();
@@ -16,6 +19,12 @@ const MyList:FC = () => {
       dispatch(fetchFavFilms());
     }
   }, [loadingStatus]);
+
+  if (authStatus === AuthorizationStatuses.notAuthorized) {
+    return <Redirect to={AppPaths.LOGIN} />
+  }
+
+
   return (
     <>
       <div className="user-page">

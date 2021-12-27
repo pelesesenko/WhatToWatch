@@ -1,12 +1,12 @@
 import {
   createSlice,
   createAsyncThunk,
-  createSelector,
 } from '@reduxjs/toolkit';
+import { favoriteApi } from '../../api/api';
 import { LoadingStatuses } from '../../constants';
-import { ActionTypes, filmsRecieved } from '../extra-actions';
-import { mockFilms } from '../mock';
+import { ActionTypes, authorizationDenied, filmsRecieved } from '../extra-actions';
 import { RootState } from '../store';
+import { handleError, handleSuccess } from '../thunk-error-handlers';
 
 interface State{
   status: keyof typeof LoadingStatuses,
@@ -22,18 +22,31 @@ const initialState: State = {
 
 export const fetchFavFilms = createAsyncThunk(ActionTypes.fetchFavFilms,
   async (_, {dispatch}) => {
-  // const response = await client.get('/fakeApi/users')
-  dispatch(filmsRecieved(mockFilms.slice(0, 7)))
-  return mockFilms.slice(0, 7); //response.data
+    try {
+      const response = await favoriteApi.get();
+      dispatch(filmsRecieved(response.data));
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
 
 export const postFavStatus = createAsyncThunk(ActionTypes.postFavStatus,
-  async (data: {id: number, status: boolean}, {dispatch}) => {
-  // const response = await client.get('/fakeApi/users')
-  dispatch(filmsRecieved([mockFilms[data.id]]));
-  return data; //response.data
+  async (params: {id: number, status: boolean}, {dispatch}) => {
+    try {
+      const response = await favoriteApi.postByParams(params.id, params.status);
+      dispatch(filmsRecieved([response.data]));
+      handleSuccess(dispatch);
+      return response.data;
+    }
+    catch(err: any) {
+      handleError(err, dispatch);
+      throw err;
+    }
 });
-
 
 const favFilmsSlice = createSlice({
   name: 'fav-films',
@@ -46,8 +59,13 @@ const favFilmsSlice = createSlice({
         state.ids = action.payload.map((film) => film.id)
       })
       .addCase(postFavStatus.fulfilled, (state, action) => {
-        if(!action.payload.status) state.ids.filter((id) => id !== action.payload.id);
-        if(!state.ids.includes(action.payload.id)) state.ids.push(action.payload.id);
+        if(!action.payload.isFavorite) {
+          state.ids.filter((id) => id !== action.payload.id);
+        } else if(!state.ids.includes(action.payload.id)) state.ids.push(action.payload.id);
+      })
+      .addCase(authorizationDenied, (state) => {
+        state.status = LoadingStatuses.idle;
+        state.ids = []
       })
   }
 });
@@ -57,11 +75,5 @@ export const {} = favFilmsSlice.actions;
 export const selectFavFilmsIds = (state: RootState) => state.favFilms.ids;
 export const selectFavFilmsStatus = (state: RootState) => state.favFilms.status;
 export const selectFavFilmsError = (state: RootState) => state.favFilms.error;
-
-// export const selectFavStatus = createSelector(
-//   selectFavFilmsIds, (_: RootState, id: number) => id,
-//   (ids, id) => ids.includes(id)
-// );
-
 
 export default favFilmsSlice.reducer;

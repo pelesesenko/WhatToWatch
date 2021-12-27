@@ -47,3 +47,9 @@ export const FilmDetailsTitles = {
   genre: 'Genre',
   released: 'Released',
 } as const;
+
+export const HttpErrorStatuses = {
+  badRequest: 400,
+  unauthorized: 401,
+  notFound: 404
+} as const;

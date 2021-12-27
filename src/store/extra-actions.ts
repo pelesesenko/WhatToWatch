@@ -1,6 +1,5 @@
 import {createAction} from '@reduxjs/toolkit';
 import Film from '../types/film';
-import { mockFilms } from './mock';
 
 export const ActionTypes = {
   filmsRecieved: 'films/films-recieved',
@@ -14,9 +13,15 @@ export const ActionTypes = {
   fetchAuth: 'user/fetch-authorization',
   login: 'user/login',
   logout: 'user/logout',
+  authorizationDenied: 'user/authorizationDenied',
+  serverAvailabilityChecked: 'server/availabilityChecked',
 } as const;
 
 export const filmsRecieved = createAction<Film[]>(ActionTypes.filmsRecieved);
+
+export const authorizationDenied = createAction(ActionTypes.authorizationDenied);
+
+export const serverAvailabilityChecked = createAction<boolean>(ActionTypes.serverAvailabilityChecked);
 
 
 

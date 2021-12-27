@@ -82,11 +82,11 @@ const Player:FC = () => {
     }
   }, [film, playerRef.current]);
 
-  const {currentTime, duration} = playerRef.current;
-
   let progressValue = tempProgressValue;
   if(progressValue === null) {
-    progressValue = duration ? Math.floor(currentTime / duration * 10000) / 100 : 0;
+    progressValue = playerRef.current.duration
+      ? Math.floor(playerRef.current.currentTime / playerRef.current.duration * 10000) / 100
+      : 0;
   }
 
   const onPlayClick = () => {
@@ -104,10 +104,8 @@ const Player:FC = () => {
   }
 
   const onTimeUpdate = () => {
-    setTimeLeft(formatTime(Math.floor(duration - currentTime)));
+    setTimeLeft(formatTime(Math.floor(playerRef.current.duration - playerRef.current.currentTime)));
   }
-
-
 
   const onMouseMove = (e: React.MouseEvent) => {
     if(tempProgressValue === null) return;
@@ -120,7 +118,7 @@ const Player:FC = () => {
 
   const onMouseUp = () => {
     if(playerRef.current.duration && tempProgressValue !== null) {
-      playerRef.current.currentTime = tempProgressValue * duration / 100;
+      playerRef.current.currentTime = tempProgressValue * playerRef.current.duration / 100;
       setTempProgressValue(null)
     }
   }
@@ -129,8 +127,8 @@ const Player:FC = () => {
     const {x, width} = progressCoord;
     const percentProgress = (e.clientX - x) / width * 100;
     setTempProgressValue(percentProgress);
-    if(duration) {
-      playerRef.current.currentTime = percentProgress / 100 * duration;
+    if(playerRef.current.duration) {
+      playerRef.current.currentTime = percentProgress / 100 * playerRef.current.duration;
     }
   }
 
@@ -173,7 +171,7 @@ const Player:FC = () => {
                     onMouseMove={onProgressMouseMove}
                     onMouseLeave={onProgressMouseLeave}
                     >
-                    {tip.is && <span className="player-tip" style={{left:`${(tip.x / progressCoord.width) * 100}%`}}>{formatTime(Math.floor((tip.x / progressCoord.width) * duration))}</span>}
+                    {tip.is && <span className="player-tip" style={{left:`${(tip.x / progressCoord.width) * 100}%`}}>{formatTime(Math.floor((tip.x / progressCoord.width) * playerRef.current.duration))}</span>}
                     <progress className="player__progress" value={progressValue} max={100} />
                     <div className="player__toggler" style={{left: `${progressValue}%`}}
                       onDragStart={(e) =>e.preventDefault()} >Toggler</div>

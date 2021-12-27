@@ -1,13 +1,14 @@
 import React, {FC, Fragment} from 'react';
 import Header from '../../common/header/header';
-import {AppPaths, Pages} from '../../../constants';
-import { useParams } from 'react-router-dom';
+import {AppPaths, AuthorizationStatuses, Pages} from '../../../constants';
+import { Redirect, useParams } from 'react-router-dom';
 import { checkIdParam } from '../../../utilites';
 import history from '../../../browser-history';
 import { useAppDispatch, useAppSelector } from '../../../store/store';
 import { fetchFilmById, selectFilmById } from '../../../store/slices/films-slice';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import { postFilmReview } from '../../../store/slices/film-info-slice';
+import { selectAuthStatus } from '../../../store/slices/user-slice';
 
 interface UrlParams {
   id: string;
@@ -19,7 +20,7 @@ interface Inputs {
 }
 
 const AddReview:FC = () => {
-
+  const authStatus = useAppSelector(selectAuthStatus);
   const dispatch = useAppDispatch();
   const {id: param} = useParams<UrlParams>();
 
@@ -39,6 +40,11 @@ const AddReview:FC = () => {
   const onSubmit: SubmitHandler<Inputs> = (review) => {
     dispatch(postFilmReview({id, review}));
   }
+
+  if (authStatus === AuthorizationStatuses.notAuthorized) {
+    return <Redirect to={AppPaths.LOGIN} />
+  }
+
 
   return (
     <>

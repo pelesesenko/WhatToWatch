@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, Fragment} from 'react';
 import Film from '../../../../types/film';
 import { formatRunTime } from '../../../../utilites';
 import { FilmDetailsTitles } from '../../../../constants';
@@ -10,7 +10,7 @@ interface Props{
 
 const FilmDetails:FC<Props> = ({film}) => {
   const formattedStarring = film.starring.map((name, i, arr) => (
-    i < arr.length - 1 ? <>{name},<br/></> : name
+    i < arr.length - 1 ? <Fragment key={i}>{name},<br/></Fragment> : name
   ));
 
   return (
