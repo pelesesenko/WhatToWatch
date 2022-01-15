@@ -33,7 +33,16 @@ module.exports = {
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
+        use: ['style-loader', {loader: 'css-loader', options: {import: false, modules: true}}],
+        include: /\.module\.css$/
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ],
+        exclude: /\.module\.css$/
       },
       {
         test: /\.(png|jpe?g|gif)$/i,

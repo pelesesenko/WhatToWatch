@@ -1,7 +1,5 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
-import {snakeToCamelAdapter} from '../utilites';
-import history from '../browser-history';
-import { AppPaths, HttpErrorStatuses } from '../constants';
+import axios, { AxiosResponse } from 'axios';
+import { snakeToCamelAdapter } from '../utilites';
 
 const BACKEND_URL = `https://6.react.pages.academy/wtw`;
 const TIMEOUT = 5000;
@@ -12,22 +10,11 @@ const httpClient = axios.create({
   withCredentials: true
 });
 
-const onSuccess = (response: AxiosResponse<Object>) => {
+const onSuccess = (response: AxiosResponse<unknown>) => {
   response.data = snakeToCamelAdapter(response.data);
   return response;
 };
 
-const onFail = (err: AxiosError) => {
-
-  const {response} = err;
-
-  if (response && response.status === HttpErrorStatuses.notFound) {
-    history.push(AppPaths.NOT_FOUND);
-    throw err;
-  }
-  throw err;
-};
-
-httpClient.interceptors.response.use(onSuccess, onFail);
+httpClient.interceptors.response.use(onSuccess);
 
 export default httpClient;

@@ -1,6 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { serverAvailabilityChecked } from '../extra-actions';
-import { RootState } from '../store';
+import {createSlice} from '@reduxjs/toolkit';
+import {serverAvailabilityChecked} from '../extra-actions';
+import {RootState} from '../store';
 
 
 interface State {
@@ -9,17 +9,17 @@ interface State {
 
 const initialState: State = {
   isAvailable: true
-}
+};
 
 const serverSlice = createSlice({
-  name: 'server',
+  name: `server`,
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
     .addCase(serverAvailabilityChecked, (state, action) => {
       state.isAvailable = action.payload;
-    })
+    });
   }
 });
 

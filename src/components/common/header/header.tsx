@@ -1,8 +1,10 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
-import {Pages, AppPaths, AuthorizationStatuses} from '../../../constants';
-import { login, logout, selectAuthStatus, selectUser } from '../../../store/slices/user-slice';
-import { useAppDispatch, useAppSelector } from '../../../store/store';
+import {Pages, AppPaths} from '../../../constants';
+import Film from '../../../types/film';
+import { makeLink } from '../../../utilites';
+import Logo from '../logo/logo';
+import UserBlock from '../user-block/user-block';
 
 interface HeaderConfig {
   [key: string]: {
@@ -43,35 +45,21 @@ const config: HeaderConfig = {
 
 interface Props {
   page: typeof Pages[keyof typeof Pages],
-  filmName?: string,
+  film?: Film,
 }
 
-const Header:FC<Props> = ({page, filmName}) => {
-  const dispatch = useAppDispatch();
-  const authStatus = useAppSelector(selectAuthStatus);
-  const user = useAppSelector(selectUser);
-  const onLogout = () => dispatch(logout()) //1;
+const Header:FC<Props> = ({page, film}) => {
 
   return (
     <header className={`page-header${config[page].addClassName}`}>
       <div className="logo">
-        {page === Pages.MAIN
-          ? <a className="logo__link">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          : <Link className="logo__link" to={AppPaths.MAIN}>
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </Link>}
+        <Logo withLink={page !== Pages.MAIN}/>
       </div>
-      {filmName &&
+      {film &&
       <nav className="breadcrumbs">
         <ul className="breadcrumbs__list">
           <li className="breadcrumbs__item">
-            <a href="movie-page.html" className="breadcrumbs__link">{filmName}</a>
+            <Link to={makeLink(AppPaths.FILM, film.id)} className="breadcrumbs__link">{film.name}</Link>
           </li>
           <li className="breadcrumbs__item">
             <a className="breadcrumbs__link">Add review</a>
@@ -79,28 +67,9 @@ const Header:FC<Props> = ({page, filmName}) => {
         </ul>
       </nav>}
       {config[page].title && <h1 className="page-title user-page__title">{config[page].title}</h1> }
-      {config[page].showUserBlock &&
-      <div className="user-block" style={{display: 'flex'}} >
-        {authStatus === AuthorizationStatuses.authorized
-          ?
-          <>
-            <div className="user-block__avatar" >
-                <Link to={AppPaths.MY_LIST}>
-                  <img src={user?.avatarUrl} alt="User avatar" width={63} height={63} />
-                </Link>
-              </div>
-              <button onClick={onLogout} className="button"
-                style={{marginLeft: `30px`, backgroundColor: 'transparent', border: 'none', cursor: 'pointer'}}>
-              <svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" fill="none"  stroke="#444" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1={21} y1={12} x2={9} y2={12} />
-              </svg>
-            </button>
-          </>
-          : <Link to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>}
-      </div>}
+      {config[page].showUserBlock && <UserBlock />}
     </header>
   );
 };
+
 export default Header;

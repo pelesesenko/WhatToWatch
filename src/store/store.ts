@@ -4,7 +4,7 @@ import filmInfo from './slices/film-info-slice';
 import favFilms from './slices/fav-films-slice';
 import user from './slices/user-slice';
 import server from './slices/server-slice';
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
 const store = configureStore({
   reducer: {

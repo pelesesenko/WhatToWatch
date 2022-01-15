@@ -34,8 +34,8 @@ export const snakeToCamelAdapter = function f(data: any): any {
   return data;
 };
 
-export const makeLink = function(path: typeof AppPaths[keyof typeof AppPaths], id: number): string {
-  switch(path) {
+export const makeLink = function (path: typeof AppPaths[keyof typeof AppPaths], id: number): string {
+  switch (path) {
     case AppPaths.ADD_REVIEW:
       return `/films/${id}/review`;
     case AppPaths.FILM:
@@ -44,22 +44,32 @@ export const makeLink = function(path: typeof AppPaths[keyof typeof AppPaths], i
       return `/player/${id}`;
   }
   return ``;
-}
+};
 
 export const convertRating = (rating: number): string => {
-  if(rating >= 0 && rating < 3) return 'Bad';
-  if(rating >= 3 && rating < 5) return 'Normal';
-  if(rating >= 5 && rating < 8) return 'Good';
-  if(rating >= 8 && rating < 10) return 'Very good';
-  if(rating === 10) return 'Awesome';
-  return '';
-}
+  if (rating >= 0 && rating < 3) {
+    return `Bad`;
+  }
+  if (rating >= 3 && rating < 5) {
+    return `Normal`;
+  }
+  if (rating >= 5 && rating < 8) {
+    return `Good`;
+  }
+  if (rating >= 8 && rating < 10) {
+    return `Very good`;
+  }
+  if (rating === 10) {
+    return `Awesome`;
+  }
+  return ``;
+};
 
-export const checkIdParam = (str: string): Boolean => {
+export const checkIdParam = (str: string): boolean => {
   const match = str.match(/\d/g) || [];
-  return match.join('') === str;
-}
+  return match.join(``) === str;
+};
 
 export const formatRunTime = (min: number): string => (
   `${Math.floor(min / 60)}h ${min % 60}m`
-)
+);

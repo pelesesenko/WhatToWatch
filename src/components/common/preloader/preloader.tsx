@@ -1,8 +1,17 @@
 import React, {FC} from 'react';
+import styles from './preloader.module.css';
 
-const Preloader:FC = () => {
+interface Props {
+  backgroundColor? : string;
+}
+const Preloader:FC<Props> = ({backgroundColor = '#180202'}) => {
+
   return (
-    <h1>Loading...</h1>
+    <div className={styles.wrapper} style={{backgroundColor}}>
+      <div className={styles.spinner}>
+        <div className={styles.marker}></div>
+      </div>
+    </div>
   );
 };
 export default Preloader;

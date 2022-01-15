@@ -9,7 +9,6 @@
 // export const selectFilmById = (state: AppStateType, id: number) => state.main.catalog.films[id];
 
 
-
 // export const selectAllFilms = createSelector(
 //   selectAllFilms,
 //   (films) => Object.values(films)

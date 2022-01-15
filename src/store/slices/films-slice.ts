@@ -10,10 +10,9 @@ import {LIST_SIZE, LoadingStatuses} from '../../constants';
 import type Film from '../../types/film';
 import {GENERAL_CATALOG_TAB} from '../../constants';
 import {RootState} from '../store';
-import { ActionTypes, filmsRecieved } from '../extra-actions';
-import { filmsApi } from '../../api/api';
-import { handleError, handleSuccess } from '../thunk-error-handlers';
-import { AxiosError } from 'axios';
+import {ActionTypes, filmsRecieved} from '../extra-actions';
+import {filmsApi} from '../../api/api';
+import {handleError, handleSuccess} from '../thunk-error-handlers';
 
 interface ExtraState {
   status: keyof typeof LoadingStatuses,
@@ -34,44 +33,41 @@ const initialState: ExtraState & EntityState<Film> = filmsAdapter.getInitialStat
 });
 
 export const fetchFilms = createAsyncThunk(ActionTypes.fetchFilms,
-  async (_, {dispatch}) => {
-    try {
-      const response = await filmsApi.get();
-      handleSuccess(dispatch);
-      return response.data
-    }
-    catch(err: any) {
-      handleError(err, dispatch);
-      throw err
-    }
-});
+    async (_, {dispatch}) => {
+      try {
+        const response = await filmsApi.get();
+        handleSuccess(dispatch);
+        return response.data;
+      } catch (err: any) {
+        handleError(err, dispatch);
+        throw err;
+      }
+    });
 export const fetchFilmById = createAsyncThunk(ActionTypes.fetchFilmById,
-  async (id: number, {dispatch}) => {
-    try {
-      const response = await filmsApi.getById(id);
-      handleSuccess(dispatch);
-      return response.data;
-    }
-    catch(err: any) {
-      handleError(err, dispatch);
-      throw err;
-    }
-});
+    async (id: number, {dispatch}) => {
+      try {
+        const response = await filmsApi.getById(id);
+        handleSuccess(dispatch);
+        return response.data;
+      } catch (err: any) {
+        handleError(err, dispatch);
+        throw err;
+      }
+    });
 export const fetchFilmPromo = createAsyncThunk(ActionTypes.fetchFilmPromo,
-  async (_, {dispatch}) => {
-    try {
-      const response = await filmsApi.getPromo();
-      handleSuccess(dispatch);
-      return response.data;
-    }
-    catch(err: any) {
-      handleError(err, dispatch);
-      throw err;
-    }
-});
+    async (_, {dispatch}) => {
+      try {
+        const response = await filmsApi.getPromo();
+        handleSuccess(dispatch);
+        return response.data;
+      } catch (err: any) {
+        handleError(err, dispatch);
+        throw err;
+      }
+    });
 
 const filmsSlice = createSlice({
-  name: 'films',
+  name: `films`,
   initialState,
   reducers: {
     genreChanged(state, action: PayloadAction<string>) {
@@ -111,18 +107,29 @@ export const selectFilmsCurrentGenre = (state: RootState) => state.films.current
 export const selectFilmsCatalogSize = (state: RootState) => state.films.catalogSize;
 
 export const selectGenres = createSelector(
-  selectAllFilms,
-  (films) => Array.from(new Set(films.map((film) => film.genre)))
+    selectAllFilms,
+    (films) => Array.from(new Set(films.map((film) => film.genre)))
 );
 
 export const selectIdsByGenre = createSelector(
-  selectAllFilms, (_: RootState, genre: string) => genre,
-  (films, genre) => {
-    return genre === GENERAL_CATALOG_TAB
-    ? films.map((film) => film.id)
-    : films.filter((film) => film.genre === genre).map((film) => film.id);
-  }
+    selectAllFilms, (_: RootState, genre: string) => genre,
+    (films, genre) => {
+      return genre === GENERAL_CATALOG_TAB
+        ? films.map((film) => film.id)
+        : films.filter((film) => film.genre === genre).map((film) => film.id);
+    }
 );
+
+export const selectFilmIdsSameGenre = createSelector(
+  selectAllFilms, selectFilmById,
+  (films, film) => {
+    if (film) {
+      const {genre, id} = film;
+      return films.filter((item) => item.genre === genre && item.id !== id).map((item) => item.id);
+    }
+    return [];
+  }
+)
 
 export default filmsSlice.reducer;
 
