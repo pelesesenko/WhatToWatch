@@ -1,16 +1,19 @@
 import {
   createSlice,
   createAsyncThunk,
+  SerializedError,
 } from '@reduxjs/toolkit';
 import {favoriteApi} from '../../api/api';
-import {LoadingStatuses} from '../../constants';
+import {LoadingStatuses, TLoadingStatuses} from '../../constants';
 import {ActionTypes, authorizationDenied, filmsRecieved} from '../extra-actions';
 import {RootState} from '../store';
-import {handleError, handleSuccess} from '../thunk-error-handlers';
+import {handleError, handleSuccess} from '../thunk-result-handlers';
+
+type Error = SerializedError | null;
 
 interface State{
-  status: keyof typeof LoadingStatuses,
-  error: null,
+  status: TLoadingStatuses,
+  error: Error,
   ids: number[]
 }
 
@@ -27,6 +30,7 @@ export const fetchFavFilms = createAsyncThunk(ActionTypes.fetchFavFilms,
         dispatch(filmsRecieved(response.data));
         handleSuccess(dispatch);
         return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -40,6 +44,7 @@ export const postFavStatus = createAsyncThunk(ActionTypes.postFavStatus,
         dispatch(filmsRecieved([response.data]));
         handleSuccess(dispatch);
         return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -72,8 +77,8 @@ const favFilmsSlice = createSlice({
 
 export const {} = favFilmsSlice.actions;
 
-export const selectFavFilmsIds = (state: RootState) => state.favFilms.ids;
-export const selectFavFilmsStatus = (state: RootState) => state.favFilms.status;
-export const selectFavFilmsError = (state: RootState) => state.favFilms.error;
+export const selectFavFilmsIds = (state: RootState): number[] => state.favFilms.ids;
+export const selectFavFilmsStatus = (state: RootState): TLoadingStatuses => state.favFilms.status;
+export const selectFavFilmsError = (state: RootState): Error => state.favFilms.error;
 
 export default favFilmsSlice.reducer;

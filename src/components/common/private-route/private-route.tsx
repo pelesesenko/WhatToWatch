@@ -9,25 +9,21 @@ interface IRender {
   render: Exclude<RouteProps[`render`], undefined> // Pick<Required<RouteProps>, 'render'>
 }
 
-
 const PrivateRoute:FC<RouteProps & IRender> = ({render, ...rest}) => {
 
   const authStatus = useAppSelector(selectAuthStatus);
 
+  if (!authStatus) {
+    return <Preloader />;
+  }
+
+  if (authStatus === AuthorizationStatuses.notAuthorized) {
+    return <Redirect to={AppPaths.LOGIN}/>;
+  }
+
   return (
     <Route {...rest}
-      render={(routeProps) => {
-
-        if (!authStatus) {
-          return <Preloader />;
-        }
-
-        if (authStatus === AuthorizationStatuses.notAuthorized) {
-          return <Redirect to={AppPaths.LOGIN}/>;
-        }
-
-        return render(routeProps);
-      }}
+      render={(routeProps) => render(routeProps)}
     />
   );
 };

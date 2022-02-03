@@ -4,7 +4,8 @@ import styles from './preloader.module.css';
 interface Props {
   backgroundColor? : string;
 }
-const Preloader:FC<Props> = ({backgroundColor = '#180202'}) => {
+
+const Preloader:FC<Props> = ({backgroundColor = `#180202`}) => {
 
   return (
     <div className={styles.wrapper} style={{backgroundColor}}>
@@ -14,4 +15,5 @@ const Preloader:FC<Props> = ({backgroundColor = '#180202'}) => {
     </div>
   );
 };
+
 export default Preloader;

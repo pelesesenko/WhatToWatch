@@ -1,5 +1,5 @@
-import axios, { AxiosResponse } from 'axios';
-import { snakeToCamelAdapter } from '../utilites';
+import axios, {AxiosResponse} from 'axios';
+import {adaptSnakeToCamel} from '../utils';
 
 const BACKEND_URL = `https://6.react.pages.academy/wtw`;
 const TIMEOUT = 5000;
@@ -11,7 +11,7 @@ const httpClient = axios.create({
 });
 
 const onSuccess = (response: AxiosResponse<unknown>) => {
-  response.data = snakeToCamelAdapter(response.data);
+  response.data = adaptSnakeToCamel(response.data);
   return response;
 };
 

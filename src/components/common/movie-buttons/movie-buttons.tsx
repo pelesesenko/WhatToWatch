@@ -3,50 +3,56 @@ import {postFavStatus} from '../../../store/slices/fav-films-slice';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import history from '../../../browser-history';
 import {AppPaths, AuthorizationStatuses} from '../../../constants';
-import {makeLink} from '../../../utilites';
-import { selectAuthStatus } from '../../../store/slices/user-slice';
+import {addIdParam} from '../../../utils';
+import {selectAuthStatus} from '../../../store/slices/user-slice';
+import Icon, {IconProps} from '../icon/icon';
+import {Link} from 'react-router-dom';
 
 
 interface Props {
   id: number;
   favStatus: boolean;
+  withAddReview?: true;
 }
 
-const MovieButtons:FC<Props> = ({id, favStatus}) => {
+const MovieButtons:FC<Props> = ({id, favStatus, withAddReview}) => {
 
   const dispatch = useAppDispatch();
   const authStatus = useAppSelector(selectAuthStatus);
+
   const handleFavClick = () => {
-    console.log(authStatus)
-    if (!authStatus) return;
+    if (!authStatus) {
+      return;
+    }
     if (authStatus === AuthorizationStatuses.notAuthorized) {
-      history.push(AppPaths.LOGIN)
+      history.push(AppPaths.LOGIN);
     } else {
       dispatch(postFavStatus({id, status: !favStatus}));
     }
   };
-  const handlePlayClick = () => history.push(makeLink(AppPaths.PLAYER, id));
+
+  const handlePlayClick = () => history.push(addIdParam(AppPaths.PLAYER, id));
+
+  const favIconProps = favStatus ? IconProps.added : IconProps.add;
+
   return (
-    <>
-      <button onClick={handlePlayClick}className="btn btn--play movie-card__button" type="button">
-        <svg viewBox="0 0 19 19" width={19} height={19}>
-          <use xlinkHref="#play-s" />
-        </svg>
+    <div className="movie-card__buttons">
+      <button className="btn btn--play movie-card__button" type="button"
+        onClick={handlePlayClick}
+      >
+        <Icon {...IconProps.play} />
         <span>Play</span>
       </button>
-      <button onClick={handleFavClick} className="btn btn--list movie-card__button" type="button">
-        {favStatus
-          ?
-          <svg viewBox="0 0 18 14" width={18} height={14}>
-            <use xlinkHref="#in-list" />
-          </svg>
-          :
-          <svg viewBox="0 0 19 20" width={19} height={20}>
-            <use xlinkHref="#add" />
-          </svg>}
+      <button className="btn btn--list movie-card__button" type="button"
+        onClick={handleFavClick}
+      >
+        <Icon {...favIconProps}/>
         <span>My list</span>
       </button>
-    </>
+      {withAddReview
+      && <Link to={addIdParam(AppPaths.ADD_REVIEW, id)} className="btn movie-card__button">Add review</Link>}
+    </div>
   );
 };
+
 export default MovieButtons;

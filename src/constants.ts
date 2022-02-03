@@ -1,3 +1,4 @@
+// business constants
 export const AppPaths = {
   MAIN: `/`,
   LOGIN: `/login`,
@@ -19,8 +20,11 @@ export const Pages = {
 } as const;
 
 export const MAX_GENRES_NUMBER = 9;
-export const GENERAL_CATALOG_TAB = `All genres`;
-export const LIST_SIZE = 8;
+export const DEFAULT_CATALOG_TAB = `All genres`;
+export const DEFAULT_CATALOG_SIZE = 8;
+export const MAX_ALIKE_FILMS = 4;
+
+// development constants
 
 export const LoadingStatuses = {
   idle: `idle`,
@@ -29,10 +33,14 @@ export const LoadingStatuses = {
   rejected: `rejected`,
 } as const;
 
+export type TLoadingStatuses = typeof LoadingStatuses[keyof typeof LoadingStatuses];
+
 export const AuthorizationStatuses = {
   authorized: `authorized`,
   notAuthorized: `not-authorized`,
 } as const;
+
+export type TAuthorizationStatuses = typeof AuthorizationStatuses[keyof typeof AuthorizationStatuses];
 
 export const FilmInfoTabs = [
   `Overview`,
@@ -46,10 +54,4 @@ export const FilmDetailsTitles = {
   runtime: `Run Time`,
   genre: `Genre`,
   released: `Released`,
-} as const;
-
-export const HttpErrorStatuses = {
-  badRequest: 400,
-  unauthorized: 401,
-  notFound: 404
 } as const;

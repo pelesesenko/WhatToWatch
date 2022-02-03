@@ -2,7 +2,7 @@ export interface FilmIdsByGenre {
   [key:string]: number[],
 }
 
-export default interface Film {
+interface Film {
   id: number;
   name: string;
   posterImage: string;
@@ -21,3 +21,5 @@ export default interface Film {
   released: number;
   isFavorite: boolean;
 }
+
+export default Film;

@@ -1,18 +1,33 @@
-import React, {FC} from 'react';
+import React, {FC, Suspense} from 'react';
 import {Router as BrowserRouter, Switch, Route} from 'react-router-dom';
 import {AppPaths} from '../constants';
-import Login from '../components/pages/login/login';
-import MyList from '../components/pages/my-list/my-list';
-import Player from '../components/pages/player/player';
-import AddReview from '../components/pages/add-review/add-review/add-review';
-import NotFound from '../components/pages/not-found/not-found';
-import FilmsContainer from '../components/pages/films/films-container';
 import browserHistory from '../browser-history';
 import {fetchAuth} from '../store/slices/user-slice';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import {selectIsServerAvailable} from '../store/slices/server-slice';
+import NotFound from '../components/pages/not-found/not-found';
+import FilmsContainer from '../components/pages/films/films-container';
 import ServerError from '../components/common/server-error/server-error';
 import PrivateRoute from '../components/common/private-route/private-route';
+import Preloader from '../components/common/preloader/preloader';
+import './app.css';
+
+const MyList = React.lazy(() => import(
+    /* webpackChunkName: "my-list" */
+    /* webpackMode: "lazy" */
+    `../components/pages/my-list/my-list`));
+const Login = React.lazy(() => import(
+    /* webpackChunkName: "login" */
+    /* webpackMode: "lazy" */
+    `../components/pages/login/login`));
+const AddReview = React.lazy(() => import(
+    /* webpackChunkName: "add-review" */
+    /* webpackMode: "lazy" */
+    `../components/pages/add-review/add-review`));
+const Player = React.lazy(() => import(
+    /* webpackChunkName: "player" */
+    /* webpackMode: "lazy" */
+    `../components/pages/player/player`));
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -23,22 +38,22 @@ const App: FC = () => {
   }, []);
 
   return (
-    <div style={{height: '100vh'}}>
-      <BrowserRouter history={browserHistory}>
-        {!isServerAvailable && <ServerError />}
+    <BrowserRouter history={browserHistory}>
+      {!isServerAvailable && <ServerError />}
+      <Suspense fallback={<Preloader/>}>
         <Switch>
-          <PrivateRoute path={AppPaths.MY_LIST} exact render={()=> <MyList />}/>
+          <PrivateRoute path={AppPaths.MY_LIST} exact render={()=> <MyList />} />
           <PrivateRoute path={AppPaths.ADD_REVIEW} exact render={()=> <AddReview />} />
-          <Route path={AppPaths.LOGIN} exact render={()=> <Login />}/>
-          <Route path={AppPaths.PLAYER} exact render={()=> <Player />}/>
-          <Route path={AppPaths.NOT_FOUND} exact render={()=> <NotFound />}/>
+          <Route path={AppPaths.LOGIN} exact component={Login} />
+          <Route path={AppPaths.PLAYER} exact component={Player} />
+          <Route path={AppPaths.NOT_FOUND} exact component={NotFound} />
           <Route path={AppPaths.MAIN} component={FilmsContainer} />
           <Route>
             <NotFound />
           </Route>
         </Switch>
-      </BrowserRouter>
-    </div>
+      </Suspense>
+    </BrowserRouter>
   );
 };
 

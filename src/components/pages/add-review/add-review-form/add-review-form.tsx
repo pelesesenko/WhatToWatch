@@ -23,7 +23,9 @@ const AddReviewForm:FC<Props> = ({id}) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="add-review__form">
+    <form className="add-review__form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="rating">
         {errors.rating && <i style={{color: `red`}}>Please select a rating</i>}
         <div className="rating__stars">

@@ -3,14 +3,14 @@ import {
   createAsyncThunk,
 } from '@reduxjs/toolkit';
 import {userApi} from '../../api/api';
-import {AuthorizationStatuses} from '../../constants';
+import {AuthorizationStatuses, TAuthorizationStatuses} from '../../constants';
 import {UserGet, UserPost} from '../../types/user';
 import {ActionTypes, authorizationDenied} from '../extra-actions';
 import {RootState} from '../store';
-import {handleError, handleSuccess} from '../thunk-error-handlers';
+import {handleError, handleSuccess} from '../thunk-result-handlers';
 
 interface State{
-  status: typeof AuthorizationStatuses[keyof typeof AuthorizationStatuses] | null,
+  status: TAuthorizationStatuses | null,
   user: UserGet | null,
 }
 
@@ -26,6 +26,7 @@ export const fetchAuth = createAsyncThunk(ActionTypes.fetchAuth,
         const response = await userApi.getUser();
         handleSuccess(dispatch);
         return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -38,6 +39,7 @@ export const login = createAsyncThunk(ActionTypes.login,
         const response = await userApi.post(data);
         handleSuccess(dispatch);
         return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -51,6 +53,7 @@ export const logout = createAsyncThunk(ActionTypes.logout,
         dispatch(authorizationDenied());
         handleSuccess(dispatch);
         return response.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -89,7 +92,7 @@ const userSlice = createSlice({
 
 export const {} = userSlice.actions;
 
-export const selectAuthStatus = (state: RootState) => state.user.status;
-export const selectUser = (state: RootState) => state.user.user;
+export const selectAuthStatus = (state: RootState): TAuthorizationStatuses | null => state.user.status;
+export const selectUser = (state: RootState): UserGet | null => state.user.user;
 
 export default userSlice.reducer;

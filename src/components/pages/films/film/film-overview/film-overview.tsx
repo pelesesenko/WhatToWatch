@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import Film from '../../../../../types/film';
-import {convertRating} from '../../../../../utilites';
+import {convertRating} from '../../../../../utils';
 
 interface Props{
   film: Film
@@ -24,4 +24,5 @@ const FilmOverview:FC<Props> = ({film}) => {
     </>
   );
 };
+
 export default FilmOverview;

@@ -1,12 +1,14 @@
-import React, {FC} from 'react';
+import React, {FC, Suspense} from 'react';
 import {Switch, Route} from 'react-router-dom';
-import Main from './main/main/main';
-import Film from './film/film/film';
 import {AppPaths, LoadingStatuses} from '../../../constants';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import {fetchFilms, selectFilmsLoadingStatus} from '../../../store/slices/films-slice';
+import Main from './main/main';
+const Film = React.lazy(() => import(`./film/film`));
+import Preloader from '../../common/preloader/preloader';
 
 const FilmsContainer:FC = () => {
+
   const LoadingStatus = useAppSelector(selectFilmsLoadingStatus);
 
   const dispatch = useAppDispatch();
@@ -14,13 +16,16 @@ const FilmsContainer:FC = () => {
     if (LoadingStatus === LoadingStatuses.idle) {
       dispatch(fetchFilms());
     }
+  }, [LoadingStatus]);
 
-  }, []);
   return (
-    <Switch>
-      <Route path={AppPaths.FILM} exact component={Film}/>
-      <Route path={AppPaths.MAIN} component={Main}/>
-    </Switch>
+    <Suspense fallback={<Preloader/>}>
+      <Switch>
+        <Route path={AppPaths.FILM} exact component={Film} />
+        <Route path={AppPaths.MAIN} component={Main} />
+      </Switch>
+    </Suspense>
   );
 };
+
 export default FilmsContainer;

@@ -1,6 +1,6 @@
 import React, {FC, Fragment} from 'react';
 import Film from '../../../../../types/film';
-import {formatRunTime} from '../../../../../utilites';
+import {formatRunTime} from '../../../../../utils';
 import {FilmDetailsTitles} from '../../../../../constants';
 import FilmDetailsSection from '../film-details-section/film-details-section';
 
@@ -9,6 +9,7 @@ interface Props{
 }
 
 const FilmDetails:FC<Props> = ({film}) => {
+
   const formattedStarring = film.starring.map((name, i, arr) => (
     i < arr.length - 1 ? <Fragment key={i}>{name},<br/></Fragment> : name
   ));
@@ -27,4 +28,5 @@ const FilmDetails:FC<Props> = ({film}) => {
     </div>
   );
 };
+
 export default FilmDetails;

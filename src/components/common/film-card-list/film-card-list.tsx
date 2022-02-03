@@ -8,9 +8,9 @@ interface Props {
 const FilmCardList:FC<Props> = ({ids}) => {
 
   return (
-  <div className="catalog__movies-list">
-    {ids.map((id) => <FilmCard id={id} key={id} />)}
-  </div>
+    <div className="catalog__movies-list">
+      {ids.map((id) => <FilmCard id={id} key={id} />)}
+    </div>
   );
 };
 

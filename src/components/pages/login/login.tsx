@@ -5,23 +5,30 @@ import Footer from '../../common/footer/footer';
 import {useAppSelector} from '../../../store/store';
 import {selectAuthStatus} from '../../../store/slices/user-slice';
 import {Redirect} from 'react-router-dom';
+import history from '../../../browser-history';
 import LoginForm from './login-form/login-form';
 
 const Login:FC = () => {
 
   const authStatus = useAppSelector(selectAuthStatus);
 
+  if (authStatus === AuthorizationStatuses.authorized) {
+    if (history.length > 2) {
+      history.goBack();
+    } else {
+      return <Redirect to={AppPaths.MAIN} />;
+    }
+  }
+
   return (
-    <>
-      {authStatus === AuthorizationStatuses.authorized && <Redirect to={AppPaths.MAIN} />}
-      <div className="user-page">
-        <Header page={Pages.LOGIN} />
-        <div className="sign-in user-page__content">
-          <LoginForm />
-        </div>
-        <Footer />
+    <div className="user-page">
+      <Header page={Pages.LOGIN} />
+      <div className="sign-in user-page__content">
+        <LoginForm />
       </div>
-    </>
+      <Footer />
+    </div>
   );
 };
+
 export default Login;

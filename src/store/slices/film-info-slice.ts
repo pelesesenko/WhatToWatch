@@ -8,9 +8,9 @@ import {ReviewGet, ReviewPost} from '../../types/review';
 import {ActionTypes} from '../extra-actions';
 import {RootState} from '../store';
 import history from '../../browser-history';
-import {makeLink} from '../../utilites';
+import {addIdParam} from '../../utils';
 import {reviewsApi} from '../../api/api';
-import {handleError, handleSuccess} from '../thunk-error-handlers';
+import {handleError, handleSuccess} from '../thunk-result-handlers';
 
 type InfoTabs = typeof FilmInfoTabs[number];
 interface State{
@@ -29,6 +29,7 @@ export const fetchFilmReviews = createAsyncThunk(ActionTypes.fetchFilmReviews,
         const response = await reviewsApi.getById(id);
         handleSuccess(dispatch);
         return {[id]: response.data};
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -39,10 +40,11 @@ export const postFilmReview = createAsyncThunk(ActionTypes.postFilmReview,
       try {
         const response = await reviewsApi.postById(data.review, data.id);
         if (response.status === 200) {
-          history.push(makeLink(AppPaths.FILM, data.id));
+          history.push(addIdParam(AppPaths.FILM, data.id));
         }
         handleSuccess(dispatch);
         return {[data.id]: response.data};
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (err: any) {
         handleError(err, dispatch);
         throw err;
@@ -71,8 +73,8 @@ const filmInfoSlice = createSlice({
 
 export const {currentTabChanged} = filmInfoSlice.actions;
 
-export const selectFilmCurrentTab = (state: RootState) => state.filmInfo.currentTab;
-export const selectFilmReviews = (state: RootState, filmId: number) => state.filmInfo.comments[filmId];
+export const selectFilmCurrentTab = (state: RootState): InfoTabs => state.filmInfo.currentTab;
+export const selectFilmReviews = (state: RootState, filmId: number): ReviewGet[] => state.filmInfo.comments[filmId];
 
 
 export default filmInfoSlice.reducer;

@@ -7,4 +7,5 @@ const ServerError:FC = () => {
     </div>
   );
 };
+
 export default ServerError;

@@ -25,6 +25,6 @@ const serverSlice = createSlice({
 
 export const {} = serverSlice.actions;
 
-export const selectIsServerAvailable = (state: RootState) => state.server.isAvailable;
+export const selectIsServerAvailable = (state: RootState): boolean => state.server.isAvailable;
 
 export default serverSlice.reducer;

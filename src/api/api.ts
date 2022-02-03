@@ -23,7 +23,7 @@ class Api<T, D> {
     return this.endpoint + `/` + params.join(`/`);
   }
   get() {
-    return client.get<T[]>(this.endpoint);//, {onDownloadProgress: (e) => console.log(e)}
+    return client.get<T[]>(this.endpoint);// , {onDownloadProgress: (e) => console.log(e)}
   }
   post(data: D) {
     return client.post<D, AxiosResponse<T>>(this.endpoint, data);

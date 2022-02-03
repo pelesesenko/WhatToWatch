@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../../store/store';
 import {selectGenres, genreChanged} from '../../../../../store/slices/films-slice';
-import {GENERAL_CATALOG_TAB, MAX_GENRES_NUMBER} from '../../../../../constants';
+import {DEFAULT_CATALOG_TAB, MAX_GENRES_NUMBER} from '../../../../../constants';
 
 interface Props{
   currentGenre: string;
@@ -13,16 +13,17 @@ const GenresList:FC<Props> = ({currentGenre}) => {
 
   return (
     <ul className="catalog__genres-list">
-      {[GENERAL_CATALOG_TAB, ...genres].map((genre) => (
-        <li
-          onClick={() => dispatch(genreChanged(genre))}
+      {[DEFAULT_CATALOG_TAB, ...genres].map((genre) => (
+        <li className={`catalog__genres-item${currentGenre === genre ? ` catalog__genres-item--active` : ``}`}
           key={genre}
-          className={`catalog__genres-item${currentGenre === genre ? ` catalog__genres-item--active` : ``}`}
-          style={{cursor: 'pointer'}}>
+          style={{cursor: `pointer`}}
+          onClick={() => dispatch(genreChanged(genre))}
+        >
           <a className="catalog__genres-link">{genre}</a>
         </li>
       ))}
     </ul>
   );
 };
+
 export default GenresList;

@@ -6,6 +6,7 @@ interface Props {
 }
 
 const FilmReview:FC<Props> = ({review}) => {
+
   const {
     user: {
       name: userName
@@ -14,10 +15,12 @@ const FilmReview:FC<Props> = ({review}) => {
     comment,
     date: dateString,
   } = review;
+
   const date = new Date(dateString);
   const dateAttribute = date.toLocaleString(`en-CA`, {year: `numeric`, month: `2-digit`, day: `2-digit`});
   const dateText = date.toLocaleString(`en-CA`, {month: `long`, day: `2-digit`}) + `, ` +
         date.toLocaleString(`en-CA`, {year: `numeric`});
+
   return (
     <div className="review">
       <blockquote className="review__quote">
@@ -31,4 +34,5 @@ const FilmReview:FC<Props> = ({review}) => {
     </div>
   );
 };
+
 export default FilmReview;
