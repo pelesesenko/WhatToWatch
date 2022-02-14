@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {Pages} from '../../../../../constants';
-import {selectFilmById} from '../../../../../store/slices/films-slice';
+import {selectFilmById} from '../../../../../store/films/selectors';
 import {useAppSelector} from '../../../../../store/store';
 import Film from '../../../../../types/film';
 import FilmBackImg from '../../../../common/film-back-img/film-back-img';

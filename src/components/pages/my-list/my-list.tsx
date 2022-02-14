@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import {LoadingStatuses, Pages} from '../../../constants';
-import {fetchFavFilms, selectFavFilmsIds, selectFavFilmsStatus} from '../../../store/slices/fav-films-slice';
+import {fetchFavFilms} from '../../../store/fav-films/actions';
+import {selectFavFilmsStatus, selectFavFilmsIds} from '../../../store/fav-films/selectors';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import FilmCardList from '../../common/film-card-list/film-card-list';
 import Footer from '../../common/footer/footer';

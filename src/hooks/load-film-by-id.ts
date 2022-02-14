@@ -1,5 +1,6 @@
 import React from 'react';
-import {fetchFilmById, selectFilmById} from '../store/slices/films-slice';
+import {fetchFilmById} from '../store/films/actions';
+import {selectFilmById} from '../store/films/selectors';
 import {useAppDispatch, useAppSelector} from '../store/store';
 import Film from '../types/film';
 

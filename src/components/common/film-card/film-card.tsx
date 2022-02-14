@@ -1,11 +1,11 @@
 import React, {FC, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AppPaths} from '../../../constants';
-import {selectFilmById} from '../../../store/slices/films-slice';
+import {selectFilmById} from '../../../store/films/selectors';
 import {useAppSelector} from '../../../store/store';
 import {addIdParam} from '../../../utils';
 import Preloader from '../preloader/preloader';
-import './film-card.css';
+import styles from './film-card.module.css';
 
 interface Props {
   id: number,
@@ -48,7 +48,7 @@ const FilmCard:FC<Props> = ({id}) => {
         >
           <img src={film.previewImage} alt={film.name} width={280} height={175} />
           {isVideo &&
-            <video className='film-card-video' src={film.previewVideoLink}
+            <video className={styles.video} src={film.previewVideoLink}
               autoPlay
             />}
         </div>

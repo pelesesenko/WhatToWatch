@@ -1,7 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {serverAvailabilityChecked} from '../extra-actions';
-import {RootState} from '../store';
-
 
 interface State {
   isAvailable: boolean;
@@ -22,9 +20,5 @@ const serverSlice = createSlice({
     });
   }
 });
-
-export const {} = serverSlice.actions;
-
-export const selectIsServerAvailable = (state: RootState): boolean => state.server.isAvailable;
 
 export default serverSlice.reducer;

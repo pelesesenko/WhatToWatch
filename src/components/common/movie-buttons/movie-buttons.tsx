@@ -1,12 +1,13 @@
 import React, {FC} from 'react';
-import {postFavStatus} from '../../../store/slices/fav-films-slice';
+import {postFavStatus} from '../../../store/fav-films/actions';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
 import history from '../../../browser-history';
 import {AppPaths, AuthorizationStatuses} from '../../../constants';
 import {addIdParam} from '../../../utils';
-import {selectAuthStatus} from '../../../store/slices/user-slice';
+import {selectAuthStatus} from '../../../store/user/selectors';
 import Icon, {IconProps} from '../icon/icon';
 import {Link} from 'react-router-dom';
+import {loginBackUrl, playerBackUrl} from '../../../services/session-storage';
 
 
 interface Props {
@@ -25,13 +26,17 @@ const MovieButtons:FC<Props> = ({id, favStatus, withAddReview}) => {
       return;
     }
     if (authStatus === AuthorizationStatuses.notAuthorized) {
+      loginBackUrl.set();
       history.push(AppPaths.LOGIN);
     } else {
       dispatch(postFavStatus({id, status: !favStatus}));
     }
   };
 
-  const handlePlayClick = () => history.push(addIdParam(AppPaths.PLAYER, id));
+  const handlePlayClick = () => {
+    playerBackUrl.set();
+    history.push(addIdParam(AppPaths.PLAYER, id));
+  };
 
   const favIconProps = favStatus ? IconProps.added : IconProps.add;
 

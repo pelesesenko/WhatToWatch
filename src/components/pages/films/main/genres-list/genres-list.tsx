@@ -1,7 +1,8 @@
 import React, {FC} from 'react';
 import {useAppDispatch, useAppSelector} from '../../../../../store/store';
-import {selectGenres, genreChanged} from '../../../../../store/slices/films-slice';
+import {genreChanged} from '../../../../../store/films/actions';
 import {DEFAULT_CATALOG_TAB, MAX_GENRES_NUMBER} from '../../../../../constants';
+import {selectGenres} from '../../../../../store/films/selectors';
 
 interface Props{
   currentGenre: string;

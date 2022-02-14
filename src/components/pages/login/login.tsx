@@ -1,23 +1,27 @@
 import React, {FC} from 'react';
-import Header from '../../common/header/header';
-import {AppPaths, AuthorizationStatuses, Pages} from '../../../constants';
-import Footer from '../../common/footer/footer';
-import {useAppSelector} from '../../../store/store';
-import {selectAuthStatus} from '../../../store/slices/user-slice';
 import {Redirect} from 'react-router-dom';
-import history from '../../../browser-history';
+import {AppPaths, AuthorizationStatuses, Pages} from '../../../constants';
+import {loginBackUrl} from '../../../services/session-storage';
+import {useAppSelector} from '../../../store/store';
+import {selectAuthStatus} from '../../../store/user/selectors';
+import Footer from '../../common/footer/footer';
+import Header from '../../common/header/header';
 import LoginForm from './login-form/login-form';
 
 const Login:FC = () => {
 
   const authStatus = useAppSelector(selectAuthStatus);
 
+  const backUrl = loginBackUrl.get() || AppPaths.MAIN;
+
+  React.useEffect(() => {
+    return () => {
+      loginBackUrl.clear();
+    };
+  }, []);
+
   if (authStatus === AuthorizationStatuses.authorized) {
-    if (history.length > 2) {
-      history.goBack();
-    } else {
-      return <Redirect to={AppPaths.MAIN} />;
-    }
+    return <Redirect to={backUrl} />;
   }
 
   return (

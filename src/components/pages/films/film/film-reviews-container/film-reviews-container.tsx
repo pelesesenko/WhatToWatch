@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
-import {fetchFilmReviews, selectFilmReviews} from '../../../../../store/slices/film-info-slice';
+import {fetchFilmReviews} from '../../../../../store/film-info/actions';
+import {selectFilmReviews} from '../../../../../store/film-info/selectors';
 import {useAppDispatch, useAppSelector} from '../../../../../store/store';
 import Preloader from '../../../../common/preloader/preloader';
 import FilmReviews from '../film-reviews/film-reviews';

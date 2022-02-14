@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {login} from '../../../../store/slices/user-slice';
+import {login} from '../../../../store/user/actions';
 import {useAppDispatch} from '../../../../store/store';
 import {UserPost} from '../../../../types/user';
 

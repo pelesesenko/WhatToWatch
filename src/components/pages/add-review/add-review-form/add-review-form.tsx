@@ -1,6 +1,6 @@
 import React, {FC, Fragment} from 'react';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {postFilmReview} from '../../../../store/slices/film-info-slice';
+import {postFilmReview} from '../../../../store/film-info/actions';
 import {useAppDispatch} from '../../../../store/store';
 
 interface Review {

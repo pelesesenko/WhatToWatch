@@ -1,5 +1,6 @@
 import React, {FC} from 'react';
-import {fetchFilmPromo, selectFilmsPromoId} from '../../../../store/slices/films-slice';
+import {fetchFilmPromo} from '../../../../store/films/actions';
+import {selectFilmsPromoId} from '../../../../store/films/selectors';
 import {useAppDispatch, useAppSelector} from '../../../../store/store';
 import Footer from '../../../common/footer/footer';
 import Preloader from '../../../common/preloader/preloader';

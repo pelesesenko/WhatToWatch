@@ -1,9 +1,10 @@
 import React, {FC} from 'react';
 import {Redirect, Route, RouteProps} from 'react-router-dom';
 import {AppPaths, AuthorizationStatuses} from '../../../constants';
-import {selectAuthStatus} from '../../../store/slices/user-slice';
+import {selectAuthStatus} from '../../../store/user/selectors';
 import {useAppSelector} from '../../../store/store';
 import Preloader from '../preloader/preloader';
+import {loginBackUrl} from '../../../services/session-storage';
 
 interface IRender {
   render: Exclude<RouteProps[`render`], undefined> // Pick<Required<RouteProps>, 'render'>
@@ -18,7 +19,8 @@ const PrivateRoute:FC<RouteProps & IRender> = ({render, ...rest}) => {
   }
 
   if (authStatus === AuthorizationStatuses.notAuthorized) {
-    return <Redirect to={AppPaths.LOGIN}/>;
+    loginBackUrl.set();
+    return <Redirect to={AppPaths.LOGIN} />;
   }
 
   return (

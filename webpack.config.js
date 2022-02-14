@@ -1,5 +1,4 @@
 const path = require("path");
-// const Dotenv = require("dotenv-webpack");
 
 module.exports = {
   mode: "development",
@@ -12,12 +11,7 @@ module.exports = {
   optimization: {
     splitChunks: {
       chunks: 'async',
-      // minSize: 20000,
-      // minRemainingSize: 0,
       minChunks: 1,
-      // maxAsyncRequests: 30,
-      // maxInitialRequests: 30,
-      // enforceSizeThreshold: 50000,
       cacheGroups: {
         defaultVendors: {
           test: /[\\/]node_modules[\\/]/,
@@ -38,11 +32,6 @@ module.exports = {
     port: 1337,
     historyApiFallback: true,
   },
-  // plugins: [
-  //   new Dotenv({
-  //     path: path.resolve(__dirname, "src", "base.env"),
-  //   }),
-  // ],
   module: {
     rules: [
       {

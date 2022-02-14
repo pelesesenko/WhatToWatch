@@ -1,12 +1,12 @@
 import {configureStore} from '@reduxjs/toolkit';
-import films from './slices/films-slice';
-import filmInfo from './slices/film-info-slice';
-import favFilms from './slices/fav-films-slice';
-import user from './slices/user-slice';
-import server from './slices/server-slice';
+import films from './films/reducer';
+import filmInfo from './film-info/reducer';
+import favFilms from './fav-films/reducer';
+import user from './user/reducer';
+import server from './server/reducer';
 import {TypedUseSelectorHook, useDispatch, useSelector} from 'react-redux';
 
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     films,
     filmInfo,

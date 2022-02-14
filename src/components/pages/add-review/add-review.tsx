@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import Header from '../../common/header/header';
 import {AppPaths, AuthorizationStatuses, Pages} from '../../../constants';
 import {useAppSelector} from '../../../store/store';
-import {selectAuthStatus} from '../../../store/slices/user-slice';
+import {selectAuthStatus} from '../../../store/user/selectors';
 import AddReviewForm from './add-review-form/add-review-form';
 import useLoadFilmById from '../../../hooks/load-film-by-id';
 import Preloader from '../../common/preloader/preloader';

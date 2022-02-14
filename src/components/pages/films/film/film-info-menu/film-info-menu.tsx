@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {FilmInfoTabs} from '../../../../../constants';
-import {currentTabChanged} from '../../../../../store/slices/film-info-slice';
+import {currentTabChanged} from '../../../../../store/film-info/actions';
 import {useAppDispatch} from '../../../../../store/store';
 
 interface Props {

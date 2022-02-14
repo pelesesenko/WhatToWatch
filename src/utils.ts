@@ -71,6 +71,16 @@ export const formatRunTime = (min: number): string => {
   return `${Math.floor(min / 60)}h ${rest < 10 ? `0` + rest : rest}m`;
 };
 
+export const formatTime = (time: number): string => {
+  const hours = Math.floor(time / 3600);
+  const minutes = Math.floor(time / 60) % 60;
+  const seconds = time % 60;
+  const strHours = hours < 10 ? `0` + hours : hours + ``;
+  const strMinutes = minutes < 10 ? `0` + minutes : minutes + ``;
+  const strSeconds = seconds < 10 ? `0` + seconds : seconds + ``;
+  return strHours + `:` + strMinutes + `:` + strSeconds;
+};
+
 export const throttle = (fn: anyFunction, delay: number): anyFunction => {
 
   let isThrottled = false;

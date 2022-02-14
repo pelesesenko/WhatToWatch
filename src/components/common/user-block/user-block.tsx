@@ -1,8 +1,10 @@
 import React, {FC} from 'react';
 import {Link} from 'react-router-dom';
 import {AppPaths, AuthorizationStatuses} from '../../../constants';
-import {logout, selectAuthStatus, selectUser} from '../../../store/slices/user-slice';
+import {loginBackUrl} from '../../../services/session-storage';
 import {useAppDispatch, useAppSelector} from '../../../store/store';
+import {logout} from '../../../store/user/actions';
+import {selectAuthStatus, selectUser} from '../../../store/user/selectors';
 import LogoutBtn from '../logout-btn/logout-btn';
 import styles from './user-block.module.css';
 
@@ -13,6 +15,7 @@ const UserBlock:FC = () => {
 
   const dispatch = useAppDispatch();
   const onLogout = () => dispatch(logout());
+  const onSignIn = () => loginBackUrl.set();
 
   return (
     <div className={`user-block ${styles.wrapper}`} >
@@ -27,7 +30,7 @@ const UserBlock:FC = () => {
           <LogoutBtn onClick={onLogout} />
         </>
         :
-        <Link to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>
+        <Link onClick={onSignIn} to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>
       }
     </div>
   );

@@ -1,7 +1,3 @@
-export interface FilmIdsByGenre {
-  [key:string]: number[],
-}
-
 interface Film {
   id: number;
   name: string;

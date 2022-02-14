@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import {LoadingStatuses} from '../../../../constants';
 import withExtractIdParam from '../../../../hocs/withExtractParam';
 import useLoadFilmById from '../../../../hooks/load-film-by-id';
-import {selectFilmIdsSameGenre, selectFilmsLoadingStatus} from '../../../../store/slices/films-slice';
+import {selectFilmIdsSameGenre, selectFilmsLoadingStatus} from '../../../../store/films/selectors';
 import {useAppSelector} from '../../../../store/store';
 import FilmCardList from '../../../common/film-card-list/film-card-list';
 import Footer from '../../../common/footer/footer';

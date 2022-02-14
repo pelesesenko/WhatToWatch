@@ -1,7 +1,7 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   preset: 'ts-jest',
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   "moduleFileExtensions": [
     "js",
     "ts",
@@ -10,19 +10,10 @@ module.exports = {
   "moduleNameMapper": {
     "\\.(css|less)$": "identity-obj-proxy"
   },
-  "snapshotSerializers": ["enzyme-to-json/serializer"]
+  "setupFilesAfterEnv": [
+    "./src/tests/setupTest.ts"
+  ],
+  // "verbose": true,
+  // "clearMocks": true,
+  // "collectCoverage": true,
 };
-
-// ,
-//   "jest": {
-//     preset: 'ts-jest',
-//   testEnvironment: 'node',
-//     "moduleFileExtensions": [
-//       "js",
-//       "ts",
-//       "tsx"
-//     ],
-//     "moduleNameMapper": {
-//       "\\.(css|less)$": "identity-obj-proxy"
-//     }
-//   }

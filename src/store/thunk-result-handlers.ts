@@ -1,12 +1,13 @@
 import {AxiosError} from 'axios';
 import {AppPaths} from '../constants';
-import {authorizationDenied, serverAvailabilityChecked} from './extra-actions';
+import {authorizationDenied, clearFavFilms, serverAvailabilityChecked} from './extra-actions';
 import {AppDispatch} from './store';
 import history from '../browser-history';
 
 export const handleSuccess = (dispatch: AppDispatch): void => {
   dispatch(serverAvailabilityChecked(true));
 };
+
 
 export const HttpErrorStatuses = {
   badRequest: 400,
@@ -20,11 +21,15 @@ export const handleError = (err : AxiosError, dispatch: AppDispatch): void => {
 
   if (response && response.status === HttpErrorStatuses.unauthorized) {
     dispatch(authorizationDenied());
+    dispatch(clearFavFilms());
   }
   if (response && response.status === HttpErrorStatuses.notFound) {
     history.push(AppPaths.NOT_FOUND);
   }
-  if (response && response.status >= 500 || !response && request) {
+  if (response && response.status < 500) {
+    dispatch(serverAvailabilityChecked(true));
+  }
+  if (response && response.status >= 500 || (!response && request)) {
     dispatch(serverAvailabilityChecked(false));
     setTimeout(() => dispatch(serverAvailabilityChecked(true)), 5000);
   }

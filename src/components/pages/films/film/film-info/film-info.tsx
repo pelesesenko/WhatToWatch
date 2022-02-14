@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {FilmInfoTabs} from '../../../../../constants';
-import {selectFilmCurrentTab} from '../../../../../store/slices/film-info-slice';
+import {selectFilmCurrentTab} from '../../../../../store/film-info/selectors';
 import {useAppSelector} from '../../../../../store/store';
 import Film from '../../../../../types/film';
 import Poster from '../../../../common/poster/poster';
