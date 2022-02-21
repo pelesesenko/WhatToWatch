@@ -43,11 +43,17 @@ interface Props {
 }
 
 const Header:FC<Props> = ({page, film}) => {
+
+  const title = <h1 className="page-title user-page__title">{config[page].title}</h1>;
+
   return (
-    <header className={`page-header${config[page].addClassName}`}>
+    <header
+      className={`page-header${config[page].addClassName}`}
+      data-testid='header'
+    >
       <Logo withLink={page !== Pages.MAIN}/>
       {film && <Breadcrambs film={film} />}
-      {config[page].title && <h1 className="page-title user-page__title">{config[page].title}</h1> }
+      {config[page].title && title }
       {!config[page].hideUserBlock && <UserBlock />}
     </header>
   );

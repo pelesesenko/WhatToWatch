@@ -4,6 +4,7 @@ import {AppPaths} from '../../../constants';
 import Film from '../../../types/film';
 import {addIdParam} from '../../../utils';
 import MovieButtons from '../movie-buttons/movie-buttons';
+import styles from './film-desc.module.css';
 
 interface Props {
   film: Film;
@@ -13,11 +14,10 @@ interface Props {
 
 const FilmDesc:FC<Props> = ({film, withLink, withAddReview}) => {
 
-  const link = addIdParam(AppPaths.FILM, film.id);
-  const linkStyle = {color: `inherit`, textDecoration: `none`};
+  const toFilm = addIdParam(AppPaths.FILM, film.id);
 
   const child = <h2 className="movie-card__title">{film.name}</h2>;
-  const title = withLink ? <Link to={link} style={linkStyle} >{child}</Link> : child;
+  const title = withLink ? <Link to={toFilm} className={styles.link} >{child}</Link> : child;
 
   return (
     <div className="movie-card__desc">

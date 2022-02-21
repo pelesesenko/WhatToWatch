@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Preloader component should render correctly 1`] = `
+<div>
+  <div
+    class="wrapper"
+    style="background-color: rgb(24, 2, 2);"
+  >
+    <div
+      class="spinner"
+    >
+      <div
+        class="marker"
+      />
+    </div>
+  </div>
+</div>
+`;

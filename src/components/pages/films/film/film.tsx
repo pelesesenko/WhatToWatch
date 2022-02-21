@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import {LoadingStatuses} from '../../../../constants';
-import withExtractIdParam from '../../../../hocs/withExtractParam';
+import withExtractIdParam from '../../../../hocs/withExtractIdParam';
 import useLoadFilmById from '../../../../hooks/load-film-by-id';
 import {selectFilmIdsSameGenre, selectFilmsLoadingStatus} from '../../../../store/films/selectors';
 import {useAppSelector} from '../../../../store/store';

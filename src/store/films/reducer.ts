@@ -7,11 +7,11 @@ import {RootState} from '../store';
 import {catalogSizeIncremented, fetchFilmById, fetchFilmPromo, fetchFilms, genreChanged} from './actions';
 
 interface ExtraState {
-  status: TLoadingStatuses,
-  error: LoadingError,
-  promoId: number | null,
-  currentGenre: string,
-  catalogSize: number
+  status: TLoadingStatuses;
+  error: LoadingError;
+  promoId: number | null;
+  currentGenre: string;
+  catalogSize: number;
 }
 
 const filmsAdapter = createEntityAdapter<Film>();

@@ -7,63 +7,69 @@ import MovieButtons from './movie-buttons';
 import userEvent from '@testing-library/user-event';
 import {AppPaths, AuthorizationStatuses} from '../../../constants';
 import {addIdParam} from '../../../utils';
-// import {AppPaths} from '../../../constants';
-// import {addIdParam} from '../../../utils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
 
 const stubId = 1;
 
-// let spyUseSelector: Any;
-
-// const spyUseSelector = jest.spyOn(store, `useAppSelector`);
-// spyUseSelector.mockReturnValue(AuthorizationStatuses.authorized);
-
-let spyUseSelector: Any;
-
 beforeEach(() => {
-  spyUseSelector = jest.spyOn(store, `useAppSelector`);
-  spyUseSelector.mockReturnValue(AuthorizationStatuses.authorized);
+  jest.spyOn(store, `useAppSelector`).mockReturnValue(AuthorizationStatuses.authorized);
 });
-
 
 describe(`MovieButtons component`, () => {
   describe(`Should render correctly`, () => {
     it(`Play button should be rendered`, () => {
-
       render(<MovieButtons id={stubId} favStatus />);
-      const text = screen.getByText(/Play/i);
-      expect(screen.getAllByRole(`button`)[0]).toContainElement(text);
+
+      expect(screen.getByRole(`button`, {name: /Play/i})).toBeInTheDocument();
     });
 
     it(`MyList button should be rendered`, () => {
-
       render(<MovieButtons id={stubId} favStatus />);
 
-      const text = screen.getByText(/My list/i);
-      expect(screen.getAllByRole(`button`)[1]).toContainElement(text);
+      expect(screen.getByRole(`button`, {name: /My list/i})).toBeInTheDocument();
     });
+
+    it(`Add review link should be rendered when flag sent`, () => {
+      render(<MovieButtons id={stubId} favStatus withAddReview />);
+
+      expect(screen.getByRole(`link`, {name: /Add Review/i})).toBeInTheDocument();
+    });
+
+    it(`Add review link should not be rendered without flag`, () => {
+      render(<MovieButtons id={stubId} favStatus />);
+
+      expect(screen.queryByRole(`link`, {name: /Add Review/i})).toBe(null);
+    });
+
   });
 
-  describe(`Should handle MyList button click correctly`, () => {
+  describe(`Should handle clicks correctly`, () => {
 
-    let mockDispatch: Any;
-    beforeEach(() => {
+    const mockDispatch = jest.fn();
+    jest.spyOn(store, `useAppDispatch`).mockReturnValue(mockDispatch);
 
-      mockDispatch = jest.fn();
-      const spyUseDispatch = jest.spyOn(store, `useAppDispatch`);
-      spyUseDispatch.mockReturnValue(mockDispatch);
+    const mockPostFavStatus = jest.spyOn(favSlice, `postFavStatus`);
+    mockPostFavStatus.mockImplementation((data: Any) => data);
 
-      const mockActionCreator = jest.spyOn(favSlice, `postFavStatus`);
-      const mockImplementation = ((data: Any) => data) as unknown as typeof favSlice.postFavStatus;
-      mockActionCreator.mockImplementation(mockImplementation);
+    const mockHistoryPush = jest.fn();
+    jest.spyOn(history, `push`).mockImplementation(mockHistoryPush);
+
+    it(`Redirect to Login page when user not authorized`, () => {
+      jest.spyOn(store, `useAppSelector`).mockReturnValue(AuthorizationStatuses.notAuthorized);
+      render(<MovieButtons id={stubId} favStatus={false} />);
+
+      const btn = screen.getByRole(`button`, {name: /My list/i});
+      userEvent.click(btn);
+
+      expect(mockHistoryPush).toHaveBeenCalledWith(AppPaths.LOGIN);
     });
 
     it(`Add to list`, () => {
       render(<MovieButtons id={stubId} favStatus={false} />);
 
-      const btn = screen.getByText(/My list/i).parentElement as HTMLElement;
+      const btn = screen.getByRole(`button`, {name: /My list/i});
       userEvent.click(btn);
 
       expect(mockDispatch).toHaveBeenCalledWith({id: stubId, status: true});
@@ -72,20 +78,19 @@ describe(`MovieButtons component`, () => {
     it(`Remove from list`, () => {
       render(<MovieButtons id={stubId} favStatus />);
 
-      const btn = screen.getByText(/My list/i).parentElement as HTMLElement;
+      const btn = screen.getByRole(`button`, {name: /My list/i});
       userEvent.click(btn);
+
       expect(mockDispatch).toHaveBeenCalledWith({id: stubId, status: false});
     });
-  });
 
-  it(`Should handle Play button click correctly`, () => {
-    jest.mock(`../../../browser-history`); // ???
-    history.push = jest.fn(() => `Hello`);
+    it(`Play`, () => {
+      render(<MovieButtons id={stubId} favStatus />);
 
-    render(<MovieButtons id={stubId} favStatus />);
+      const btn = screen.getByRole(`button`, {name: /Play/i});
+      userEvent.click(btn);
 
-    const btn = screen.getByText(/Play/i).parentElement as HTMLElement;
-    userEvent.click(btn);
-    expect(history.push).toHaveBeenCalledWith(addIdParam(AppPaths.PLAYER, stubId));
+      expect(mockHistoryPush).toHaveBeenCalledWith(addIdParam(AppPaths.PLAYER, stubId));
+    });
   });
 });

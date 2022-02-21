@@ -7,7 +7,7 @@ import Preloader from '../preloader/preloader';
 import {loginBackUrl} from '../../../services/session-storage';
 
 interface IRender {
-  render: Exclude<RouteProps[`render`], undefined> // Pick<Required<RouteProps>, 'render'>
+  render: Exclude<RouteProps[`render`], undefined>; // Pick<Required<RouteProps>, 'render'>
 }
 
 const PrivateRoute:FC<RouteProps & IRender> = ({render, ...rest}) => {

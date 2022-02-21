@@ -9,7 +9,7 @@ import Preloader from '../../common/preloader/preloader';
 import history from '../../../browser-history';
 import Poster from '../../common/poster/poster';
 import FilmBackImg from '../../common/film-back-img/film-back-img';
-import withExtractIdParam from '../../../hocs/withExtractParam';
+import withExtractIdParam from '../../../hocs/withExtractIdParam';
 
 interface Props {
   id: number;

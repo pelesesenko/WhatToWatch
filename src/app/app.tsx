@@ -11,6 +11,7 @@ import ServerError from '../components/common/server-error/server-error';
 import PrivateRoute from '../components/common/private-route/private-route';
 import Preloader from '../components/common/preloader/preloader';
 import './app.css';
+import {selectAuthStatus} from '../store/user/selectors';
 
 const MyList = React.lazy(() => import(
     /* webpackChunkName: "my-list" */
@@ -32,10 +33,13 @@ const Player = React.lazy(() => import(
 const App: FC = () => {
   const dispatch = useAppDispatch();
   const isServerAvailable = useAppSelector(selectIsServerAvailable);
+  const authStatus = useAppSelector(selectAuthStatus);
 
   React.useEffect(() =>{
-    dispatch(fetchAuth());
-  }, []);
+    if (!authStatus) {
+      dispatch(fetchAuth());
+    }
+  }, [authStatus]);
 
   return (
     <BrowserRouter history={browserHistory}>

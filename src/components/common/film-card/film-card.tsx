@@ -20,7 +20,7 @@ const FilmCard:FC<Props> = ({id}) => {
 
   React.useEffect(() => {
 
-    const timerOver = isMouseOver ? setTimeout(() => setIsVideo(true), 1000) : null;
+    const timerOver = isMouseOver ? setTimeout(() => setIsVideo(true), 1200) : null;
     if (!isMouseOver) {
       setIsVideo(false);
       if (timerOver) {
@@ -40,15 +40,17 @@ const FilmCard:FC<Props> = ({id}) => {
   }
 
   return (
-    <article className="small-movie-card catalog__movies-card">
+    <article className="small-movie-card catalog__movies-card"
+      onMouseEnter={() => setIsMouseOver(true)}
+      onMouseLeave={() => setIsMouseOver(false)}
+    >
       <Link to={addIdParam(AppPaths.FILM, film.id)}>
-        <div className="small-movie-card__image"
-          onMouseEnter={() => setIsMouseOver(true)}
-          onMouseLeave={() => setIsMouseOver(false)}
-        >
+        <div className="small-movie-card__image">
           <img src={film.previewImage} alt={film.name} width={280} height={175} />
           {isVideo &&
-            <video className={styles.video} src={film.previewVideoLink}
+            <video className={styles.video}
+              data-testid="video"
+              src={film.previewVideoLink}
               autoPlay
             />}
         </div>

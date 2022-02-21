@@ -5,8 +5,8 @@ import {authorizationDenied} from '../extra-actions';
 import {fetchAuth, login, logout} from './actions';
 
 interface State{
-  status: TAuthorizationStatuses | null,
-  user: UserGet | null,
+  status: TAuthorizationStatuses | null;
+  user: UserGet | null;
 }
 
 const initialState: State = {

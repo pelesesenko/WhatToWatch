@@ -1,7 +1,7 @@
 import React, {FC, useState} from 'react';
 import history from '../../../browser-history';
 import {AppPaths, Pages} from '../../../constants';
-import withExtractIdParam from '../../../hocs/withExtractParam';
+import withExtractIdParam from '../../../hocs/withExtractIdParam';
 import useLoadFilmById from '../../../hooks/load-film-by-id';
 import useFullScreen from '../../../hooks/fullscreen';
 import {throttle, formatTime} from '../../../utils';

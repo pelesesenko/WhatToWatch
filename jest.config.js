@@ -14,6 +14,6 @@ module.exports = {
     "./src/tests/setupTest.ts"
   ],
   // "verbose": true,
-  // "clearMocks": true,
+  "clearMocks": true,
   // "collectCoverage": true,
 };
