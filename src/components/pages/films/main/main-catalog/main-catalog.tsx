@@ -34,7 +34,7 @@ const MainCatalog:FC = () => {
       <FilmCardList ids={inListIds} />
       <div className="catalog__more">
         <button className="catalog__button" type="button"
-          style={buttonHidden ? {display: `none`} : {}}
+          style={buttonHidden ? {display: 'none'} : {}}
           onClick={() => dispatch(catalogSizeIncremented())}
         >
           Show more

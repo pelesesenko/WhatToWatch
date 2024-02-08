@@ -11,20 +11,19 @@ const mockStore = configureMockStore();
 const initialState = {};
 const store = mockStore(initialState);
 
-const AllTheProviders: FC = ({children}) => {
-  return (
-    <Provider store={store}>
-      <Router history={mockHistory}>
-        {children}
-      </Router>
-    </Provider>
-  );
-};
+const Providers: FC = ({children}) => (
+  <Provider store={store}>
+    <Router history={mockHistory}>
+      {children}
+    </Router>
+  </Provider>
+);
+
 // eslint-disable-next-line
 const customRender = (
-    ui: ReactElement,
-    options?: Omit<RenderOptions, `wrapper`>,
-) => render(ui, {wrapper: AllTheProviders, ...options});
+  ui: ReactElement,
+  options?: Omit<RenderOptions, 'wrapper'>,
+) => render(ui, {wrapper: Providers, ...options});
 
 export const timeOut = (delay: number): Promise<void> => new Promise((resolve) => {
   setTimeout(() => resolve(), delay);

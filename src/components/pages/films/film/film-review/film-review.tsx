@@ -17,9 +17,8 @@ const FilmReview:FC<Props> = ({review}) => {
   } = review;
 
   const date = new Date(dateString);
-  const dateAttribute = date.toLocaleString(`en-CA`, {year: `numeric`, month: `2-digit`, day: `2-digit`});
-  const dateText = date.toLocaleString(`en-CA`, {month: `long`, day: `2-digit`}) + `, ` +
-        date.toLocaleString(`en-CA`, {year: `numeric`});
+  const dateAttribute = date.toLocaleString('en-CA', {year: 'numeric', month: '2-digit', day: '2-digit'});
+  const dateText = `${date.toLocaleString('en-CA', {month: 'long', day: '2-digit'})}, ${date.toLocaleString('en-CA', {year: 'numeric'})}`;
 
   return (
     <div className="review">

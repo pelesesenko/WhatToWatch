@@ -15,9 +15,9 @@ const GenresList:FC<Props> = ({currentGenre}) => {
   return (
     <ul className="catalog__genres-list">
       {[DEFAULT_CATALOG_TAB, ...genres].map((genre) => (
-        <li className={`catalog__genres-item${currentGenre === genre ? ` catalog__genres-item--active` : ``}`}
+        <li className={`catalog__genres-item${currentGenre === genre ? ' catalog__genres-item--active' : ''}`}
           key={genre}
-          style={{cursor: `pointer`}}
+          style={{cursor: 'pointer'}}
           onClick={() => dispatch(genreChanged(genre))}
         >
           <a className="catalog__genres-link">{genre}</a>

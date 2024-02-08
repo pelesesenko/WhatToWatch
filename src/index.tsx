@@ -5,10 +5,10 @@ import App from './app/app';
 import store from './store/store';
 
 ReactDOM.render(
-    <Provider store={store}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
-    </Provider>,
-    document.querySelector(`#root`)
+  <Provider store={store}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </Provider>,
+  document.querySelector('#root')
 );

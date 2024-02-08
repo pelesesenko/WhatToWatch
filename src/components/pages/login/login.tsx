@@ -14,11 +14,7 @@ const Login:FC = () => {
 
   const backUrl = loginBackUrl.get() || AppPaths.MAIN;
 
-  React.useEffect(() => {
-    return () => {
-      loginBackUrl.clear();
-    };
-  }, []);
+  React.useEffect(() => () => loginBackUrl.clear(), []);
 
   if (authStatus === AuthorizationStatuses.authorized) {
     return <Redirect to={backUrl} />;

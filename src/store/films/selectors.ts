@@ -17,29 +17,26 @@ export const selectFilmsCurrentGenre = (state: RootState): string => state.films
 export const selectFilmsCatalogSize = (state: RootState): number => state.films.catalogSize;
 
 export const selectGenres = createSelector(
-    selectAllFilms,
-    (films) => Array.from(new Set(films.map((film) => film.genre)))
+  selectAllFilms,
+  (films) => Array.from(new Set(films.map((film) => film.genre)))
 );
 
 export const selectIdsByGenre = createSelector(
-    selectAllFilms, (_: RootState, genre: string) => genre,
-    (films, genre) => {
-      return genre === DEFAULT_CATALOG_TAB
-        ? films.map((film) => film.id)
-        : films.filter((film) => film.genre === genre).map((film) => film.id);
-    }
+  selectAllFilms, (_: RootState, genre: string) => genre,
+  (films, genre) => genre === DEFAULT_CATALOG_TAB
+    ? films.map((film) => film.id)
+    : films.filter((film) => film.genre === genre).map((film) => film.id)
 );
 
 export const selectFilmIdsSameGenre = createSelector(
-    selectAllFilms, selectFilmById,
-    (films, film) => {
-      if (film) {
-        const {genre, id} = film;
-
-        return films.filter((item) => item.genre === genre && item.id !== id)
-      .map((item) => item.id)
-      .slice(0, MAX_ALIKE_FILMS);
-      }
-      return [];
+  selectAllFilms, selectFilmById,
+  (films, film) => {
+    if (film) {
+      const {genre, id} = film;
+      return films.filter((item) => item.genre === genre && item.id !== id)
+        .map((item) => item.id)
+        .slice(0, MAX_ALIKE_FILMS);
     }
+    return [];
+  }
 );

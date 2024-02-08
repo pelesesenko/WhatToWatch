@@ -1,8 +1,7 @@
 import React, {FC} from 'react';
-import {LoadingStatuses} from '../../../../constants';
 import withExtractIdParam from '../../../../hocs/withExtractIdParam';
 import useLoadFilmById from '../../../../hooks/load-film-by-id';
-import {selectFilmIdsSameGenre, selectFilmsLoadingStatus} from '../../../../store/films/selectors';
+import {selectFilmIdsSameGenre} from '../../../../store/films/selectors';
 import {useAppSelector} from '../../../../store/store';
 import FilmCardList from '../../../common/film-card-list/film-card-list';
 import Footer from '../../../common/footer/footer';
@@ -13,24 +12,20 @@ interface Props {
   id: number;
 }
 
-const Film:FC<Props> = ({id}) => {
+export const Film:FC<Props> = ({id}) => {
 
   const film = useLoadFilmById(id, true);
   const alikeFilmIds = useAppSelector((state) => selectFilmIdsSameGenre(state, id));
-  const filmsLoadingStatus = useAppSelector(selectFilmsLoadingStatus);
+
+  const filmOrPreloader = film ? <FilmContent film={film} /> : <Preloader />;
 
   return (
     <>
-      {film
-        ? <FilmContent film={film} />
-        : <Preloader />
-      }
+      {filmOrPreloader}
       <div className="page-content">
         <section className="catalog catalog--like-this">
           <h2 className="catalog__title">More like this</h2>
-          {film && (filmsLoadingStatus === LoadingStatuses.fulfilled)
-            ? <FilmCardList ids={alikeFilmIds} />
-            : <Preloader />}
+          <FilmCardList ids={alikeFilmIds} />
         </section>
         <Footer />
       </div>

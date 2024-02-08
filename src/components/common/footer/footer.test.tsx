@@ -5,12 +5,12 @@ import Footer from './footer';
 
 const mockLogo = jest.fn((props) => [...props]);
 jest.mock(
-    `../logo/logo.tsx`,
-    () => jest.fn(({withLink}) => mockLogo({withLink}))
+  '../logo/logo.tsx',
+  () => jest.fn(({withLink}) => mockLogo({withLink}))
 );
 
-describe(`Footer component should render correctly`, () => {
-  it(`Render Logo with correct props`, () => {
+describe('Footer component should render correctly', () => {
+  it('Render Logo with correct props', () => {
     const {rerender} = render(<Footer main />);
     rerender(<Footer />);
 
@@ -19,7 +19,7 @@ describe(`Footer component should render correctly`, () => {
     expect(mockLogo).toHaveBeenNthCalledWith(2, {withLink: true});
   });
 
-  it(`Copyright`, () => {
+  it('Copyright', () => {
     render(<Footer />);
 
     expect(screen.getByText(/© 2019 What to watch Ltd./i)).toBeInTheDocument();

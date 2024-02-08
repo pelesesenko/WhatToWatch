@@ -7,7 +7,7 @@ const usePlaybackTiming = () => {
   const playerRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
-  const [timeLeft, setTimeLeft] = useState(``);
+  const [timeLeft, setTimeLeft] = useState('');
   const [tempProgressValue, setTempProgressValue] = useState<number | undefined>(undefined);
   const [isTimeToggling, setIsTimeToggling] = useState(false);
   const [progressCoord, setProgressCoord] = useState({x: 0, width: 0});
@@ -24,10 +24,10 @@ const usePlaybackTiming = () => {
 
     syncProgressCoord();
 
-    window.addEventListener(`resize`, syncProgressCoord);
+    window.addEventListener('resize', syncProgressCoord);
 
     return () => {
-      window.removeEventListener(`resize`, syncProgressCoord);
+      window.removeEventListener('resize', syncProgressCoord);
     };
   }, [progressRef.current]);
 

@@ -5,10 +5,10 @@ import LogoutBtn from './logout-btn';
 
 const mockOnClick = jest.fn();
 
-it(`LogoutBtn component should handle click correctly`, () => {
+it('LogoutBtn component should handle click correctly', () => {
   render(<LogoutBtn onClick={mockOnClick} />);
 
-  userEvent.click(screen.getByRole(`button`));
+  userEvent.click(screen.getByRole('button'));
 
   expect(mockOnClick).toBeCalledTimes(1);
 });

@@ -25,40 +25,36 @@ export const initialState: ExtraState & EntityState<Film> = filmsAdapter.getInit
 });
 
 const filmsSlice = createSlice({
-  name: `films`,
+  name: 'films',
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-    .addCase(fetchFilms.fulfilled, (state, action) => {
-      state.status = LoadingStatuses.fulfilled;
-      filmsAdapter.addMany(state, action.payload);
-    })
-    .addCase(fetchFilmPromo.fulfilled, (state, action) => {
-      filmsAdapter.addOne(state, action.payload);
-      state.promoId = action.payload.id;
-    })
+      .addCase(fetchFilms.fulfilled, (state, action) => {
+        state.status = LoadingStatuses.fulfilled;
+        filmsAdapter.addMany(state, action.payload);
+      })
+      .addCase(fetchFilmPromo.fulfilled, (state, action) => {
+        filmsAdapter.addOne(state, action.payload);
+        state.promoId = action.payload.id;
+      })
 
-   .addCase(fetchFilmById.fulfilled, filmsAdapter.addOne)
+      .addCase(fetchFilmById.fulfilled, filmsAdapter.addOne)
 
-   .addCase(filmsRecieved, filmsAdapter.setMany)
+      .addCase(filmsRecieved, filmsAdapter.setMany)
 
-   .addCase(clearFilms, (state) => {
-     Object.assign(state, initialState);
-   })
-
-   .addCase(catalogSizeIncremented, (state) => {
-     state.catalogSize += DEFAULT_CATALOG_SIZE;
-   })
-   .addCase(genreChanged, (state, action) => {
-     state.currentGenre = action.payload;
-   });
+      .addCase(clearFilms, (state) => {
+        Object.assign(state, initialState);
+      })
+      .addCase(catalogSizeIncremented, (state) => {
+        state.catalogSize += DEFAULT_CATALOG_SIZE;
+      })
+      .addCase(genreChanged, (state, action) => {
+        state.currentGenre = action.payload;
+      });
   },
 });
-
 
 export const adapterSelectors = filmsAdapter.getSelectors((state: RootState) => state.films);
 
 export default filmsSlice.reducer;
-
-

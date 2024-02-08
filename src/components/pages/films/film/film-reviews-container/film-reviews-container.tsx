@@ -7,9 +7,9 @@ import FilmReviews from '../film-reviews/film-reviews';
 
 interface Props {
   id: number;
-  backgroundColor: string;
+  bgColor: string;
 }
-const FilmReviewsContainer:FC<Props> = ({id, backgroundColor}) => {
+const FilmReviewsContainer:FC<Props> = ({id, bgColor}) => {
 
   const dispatch = useAppDispatch();
   const reviews = useAppSelector((state) => selectFilmReviews(state, id));
@@ -20,14 +20,11 @@ const FilmReviewsContainer:FC<Props> = ({id, backgroundColor}) => {
     }
   }, [id, reviews]);
 
-  return (
-    <>
-      {!reviews
-        ? <Preloader backgroundColor={backgroundColor}/>
-        : <FilmReviews reviews={reviews.slice(0, 6)} />
-      }
-    </>
-  );
+  const result = !reviews
+    ? <Preloader backgroundColor={bgColor}/>
+    : <FilmReviews reviews={reviews.slice(0, 6)} />;
+
+  return result;
 };
 
 export default FilmReviewsContainer;

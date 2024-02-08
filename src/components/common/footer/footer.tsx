@@ -5,17 +5,15 @@ interface Props {
   main?: true,
 }
 
-const Footer:FC<Props> = ({main}) => {
-  return (
-    <footer className="page-footer">
-      <div className="logo">
-        <Logo withLink={!main}/>
-      </div>
-      <div className="copyright">
-        <p>© 2019 What to watch Ltd.</p>
-      </div>
-    </footer>
-  );
-};
+const Footer:FC<Props> = ({main}) => (
+  <footer className="page-footer">
+    <div className="logo">
+      <Logo withLink={!main}/>
+    </div>
+    <div className="copyright">
+      <p>© 2019 What to watch Ltd.</p>
+    </div>
+  </footer>
+);
 
 export default Footer;

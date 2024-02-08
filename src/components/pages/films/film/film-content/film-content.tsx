@@ -10,21 +10,18 @@ interface Props{
   film: Film
 }
 
-const FilmContent:FC<Props> = ({film}) => {
-
-  return (
-    <section className="movie-card movie-card--full" style={{backgroundColor: film.backgroundColor}}>
-      <div className="movie-card__hero">
-        <FilmBackImg film={film} />
-        <h1 className="visually-hidden">WTW</h1>
-        <Header page={Pages.FILM} />
-        <div className="movie-card__wrap">
-          <FilmDesc film={film} withAddReview />
-        </div>
+const FilmContent:FC<Props> = ({film}) => (
+  <section className="movie-card movie-card--full" style={{backgroundColor: film.backgroundColor}}>
+    <div className="movie-card__hero">
+      <FilmBackImg film={film} />
+      <h1 className="visually-hidden">WTW</h1>
+      <Header page={Pages.FILM} />
+      <div className="movie-card__wrap">
+        <FilmDesc film={film} withAddReview />
       </div>
-      <FilmInfo film={film} />
-    </section>
-  );
-};
+    </div>
+    <FilmInfo film={film} />
+  </section>
+);
 
 export default FilmContent;

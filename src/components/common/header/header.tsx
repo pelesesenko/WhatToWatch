@@ -15,25 +15,25 @@ interface HeaderConfig {
 
 const config: HeaderConfig = {
   [Pages.MAIN]: {
-    addClassName: ` movie-card__head`,
+    addClassName: ' movie-card__head',
   },
   [Pages.FILM]: {
-    addClassName: ` movie-card__head`,
+    addClassName: ' movie-card__head',
   },
   [Pages.LOGIN]: {
-    addClassName: ` user-page__head`,
-    title: `Sign in`,
+    addClassName: ' user-page__head',
+    title: 'Sign in',
     hideUserBlock: true
   },
   [Pages.MY_LIST]: {
-    addClassName: ` user-page__head`,
-    title: `My list`,
+    addClassName: ' user-page__head',
+    title: 'My list',
   },
   [Pages.ADD_REVIEW]: {
-    addClassName: ``,
+    addClassName: '',
   },
   [Pages.NOT_FOUND]: {
-    addClassName: ` movie-card__head`,
+    addClassName: ' movie-card__head',
   },
 };
 

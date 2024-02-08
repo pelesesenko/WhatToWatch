@@ -1,4 +1,6 @@
-import {AppPaths} from './constants';
+import React, { Fragment } from 'react';
+import {AppPaths, FormErrorMessages} from './constants';
+import Film from './types/film';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Any = any;
@@ -7,19 +9,17 @@ type anyFunction = (...args: Any) => Any;
 
 export const adaptSnakeToCamel = function f(data: Any): Any {
 
-  const wordAdapter = (word: string) => {
-    return word[0].toUpperCase() + word.slice(1).toLowerCase();
-  };
+  const wordAdapter = (word: string) => word[0].toUpperCase() + word.slice(1).toLowerCase();
 
   const stringAdapter = (string: string) => {
-    if (!string.includes(`_`)) {
+    if (!string.includes('_')) {
       return string;
     }
-    const words = string.split(`_`);
+    const words = string.split('_');
     return words.map((word, i) => i === 0
       ? word.toLowerCase()
       : wordAdapter(word)
-    ).join(``);
+    ).join('');
   };
 
   if (data instanceof Array) {
@@ -39,46 +39,46 @@ export const adaptSnakeToCamel = function f(data: Any): Any {
 };
 
 export const addIdParam = function (path: typeof AppPaths[keyof typeof AppPaths], id: number): string {
-  return path.replace(`:id`, id.toString());
+  return path.replace(':id', id.toString());
 };
 
 export const convertRating = (rating: number): string => {
   if (rating >= 0 && rating < 3) {
-    return `Bad`;
+    return 'Bad';
   }
   if (rating >= 3 && rating < 5) {
-    return `Normal`;
+    return 'Normal';
   }
   if (rating >= 5 && rating < 8) {
-    return `Good`;
+    return 'Good';
   }
   if (rating >= 8 && rating < 10) {
-    return `Very good`;
+    return 'Very good';
   }
   if (rating === 10) {
-    return `Awesome`;
+    return 'Awesome';
   }
-  return ``;
+  return '';
 };
 
 export const tryConvertToInteger = (str: string): number | undefined => {
   const match = str.match(/\d/g) || [];
-  return match.length ? +match.join(``) : undefined;
+  return match.length ? +match.join('') : undefined;
 };
 
 export const formatRunTime = (min: number): string => {
   const rest = min % 60;
-  return `${Math.floor(min / 60)}h ${rest < 10 ? `0` + rest : rest}m`;
+  return `${Math.floor(min / 60)}h ${rest < 10 ? `0${rest}` : rest}m`;
 };
 
 export const formatTime = (time: number): string => {
   const hours = Math.floor(time / 3600);
   const minutes = Math.floor(time / 60) % 60;
   const seconds = time % 60;
-  const strHours = hours < 10 ? `0` + hours : hours + ``;
-  const strMinutes = minutes < 10 ? `0` + minutes : minutes + ``;
-  const strSeconds = seconds < 10 ? `0` + seconds : seconds + ``;
-  return strHours + `:` + strMinutes + `:` + strSeconds;
+  const strHours = hours < 10 ? `0${hours}` : hours.toString();
+  const strMinutes = minutes < 10 ? `0${minutes}` : minutes.toString();
+  const strSeconds = seconds < 10 ? `0${seconds}` : seconds.toString();
+  return `${strHours}:${strMinutes}:${strSeconds}`;
 };
 
 export const throttle = (fn: anyFunction, delay: number): anyFunction => {
@@ -107,3 +107,16 @@ export const throttle = (fn: anyFunction, delay: number): anyFunction => {
 
   return wrapper;
 };
+
+export const createFormError = (message: FormErrorMessages): JSX.Element => (
+  <i style={{color: 'red'}}>
+    {message}
+  </i>
+);
+
+export const formatStarring = (film: Film): (string | JSX.Element)[] => film.starring.map((name, i, arr) => (
+  i < arr.length - 1
+    ? <Fragment key={name}>{name},<br/></Fragment>
+    : name
+));
+

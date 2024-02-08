@@ -8,7 +8,7 @@ const withExtractIdParam = function<T> (WrappedComponent: FC<T & {id: number}>):
 
     const {id: str} = useParams<{id: string}>();
     const match = str.match(/\d/g) || [];
-    const value = match.length ? +match.join(``) : undefined;
+    const value = match.length ? +match.join('') : undefined;
 
     if (value === undefined) {
       return <Redirect to={AppPaths.NOT_FOUND} />;

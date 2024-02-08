@@ -20,5 +20,5 @@ class BackUrl {
   }
 }
 
-export const loginBackUrl = new BackUrl(`login-back-url`, browserHistory);
-export const playerBackUrl = new BackUrl(`player-back-url`, browserHistory);
+export const loginBackUrl = new BackUrl('login-back-url', browserHistory);
+export const playerBackUrl = new BackUrl('player-back-url', browserHistory);

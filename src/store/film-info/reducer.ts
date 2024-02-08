@@ -1,22 +1,20 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {FilmInfoTabs} from '../../constants';
+import {FilmInfoTabs, TFilmInfoTabs} from '../../constants';
 import {ReviewGet} from '../../types/review';
 import {currentTabChanged, fetchFilmReviews, postFilmReview} from './actions';
 
-export type InfoTabs = typeof FilmInfoTabs[number];
-
 interface State{
-  currentTab: InfoTabs;
+  currentTab: TFilmInfoTabs;
   comments: {[key: number]: ReviewGet[]};
 }
 
 export const initialState: State = {
-  currentTab: FilmInfoTabs[0],
+  currentTab: FilmInfoTabs.overview,
   comments: {}
 };
 
 const filmInfoSlice = createSlice({
-  name: `film-info`,
+  name: 'film-info',
   initialState,
   reducers: {},
   extraReducers(builder) {
@@ -26,7 +24,7 @@ const filmInfoSlice = createSlice({
       })
       .addCase(postFilmReview.fulfilled, (state, action) => {
         state.comments = Object.assign(state.comments, action.payload);
-        state.currentTab = FilmInfoTabs[2];
+        state.currentTab = FilmInfoTabs.reviews;
       })
       .addCase(currentTabChanged, (state, action) => {
         state.currentTab = action.payload;

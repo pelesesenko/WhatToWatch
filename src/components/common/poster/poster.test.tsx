@@ -5,42 +5,42 @@ import {render, screen} from '../../../tests/utils';
 import {addIdParam} from '../../../utils';
 import Poster from './poster';
 
-describe(`Poster component should render`, () => {
-  it(`correct image`, () => {
+describe('Poster component should render', () => {
+  it('correct image', () => {
     render(<Poster film={stubFilm} />);
 
-    const img = screen.getByRole(`img`, {name: `${stubFilm.name} poster`});
+    const img = screen.getByRole('img', {name: `${stubFilm.name} poster`});
 
-    expect(img).toHaveAttribute(`src`, stubFilm.posterImage);
+    expect(img).toHaveAttribute('src', stubFilm.posterImage);
   });
 
-  describe(`accordingly to conditions from props:`, () => {
-    it(`with link`, () => {
+  describe('accordingly to conditions from props:', () => {
+    it('with link', () => {
       render(<Poster film={stubFilm} withLink />);
 
-      const link = screen.getByRole(`link`, {name: `${stubFilm.name} poster`});
+      const link = screen.getByRole('link', {name: `${stubFilm.name} poster`});
 
-      expect(link).toHaveAttribute(`href`, addIdParam(AppPaths.FILM, stubFilm.id));
+      expect(link).toHaveAttribute('href', addIdParam(AppPaths.FILM, stubFilm.id));
     });
 
-    it(`without link`, () => {
+    it('without link', () => {
       render(<Poster film={stubFilm} />);
 
-      const link = screen.queryByRole(`link`, {name: `${stubFilm.name} poster`});
+      const link = screen.queryByRole('link', {name: `${stubFilm.name} poster`});
 
       expect(link).toBeNull();
     });
 
-    it(`with class modifier`, () => {
-      const {container} = render(<Poster film={stubFilm} mod='small'/>);
+    it('with class modifier', () => {
+      const {container} = render(<Poster film={stubFilm} mode='small'/>);
 
-      expect(container.firstChild).toHaveClass(`movie-card__poster movie-card__poster--small`, {exact: true});
+      expect(container.firstChild).toHaveClass('movie-card__poster movie-card__poster--small', {exact: true});
     });
 
-    it(`without class modifier`, () => {
+    it('without class modifier', () => {
       const {container} = render(<Poster film={stubFilm} />);
 
-      expect(container.firstChild).toHaveClass(`movie-card__poster`, {exact: true});
+      expect(container.firstChild).toHaveClass('movie-card__poster', {exact: true});
     });
   });
 });

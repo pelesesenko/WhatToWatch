@@ -21,15 +21,16 @@ const MyList:FC = () => {
     }
   }, [loadingStatus]);
 
+  const filmCardListOrPreloader = loadingStatus === LoadingStatuses.fulfilled
+    ? <FilmCardList ids={ids}/>
+    : <Preloader />;
+
   return (
     <div className="user-page">
       <Header page={Pages.MY_LIST} />
       <section className={`catalog ${styles.catalog}`}>
         <h2 className="catalog__title visually-hidden">Catalog</h2>
-        {loadingStatus === LoadingStatuses.fulfilled
-          ? <FilmCardList ids={ids}/>
-          : <Preloader />
-        }
+        {filmCardListOrPreloader}
       </section>
       <Footer />
     </div>

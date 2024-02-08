@@ -17,16 +17,19 @@ const FilmInfo:FC<Props> = ({film}) => {
 
   const currentInfoTab = useAppSelector(selectFilmCurrentTab);
 
+  const Tabs = {
+    [FilmInfoTabs.overview]: <FilmOverview film={film} />,
+    [FilmInfoTabs.details]: <FilmDetails film={film} />,
+    [FilmInfoTabs.reviews]: <FilmReviewsContainer id={film.id} bgColor={film.backgroundColor}/>,
+  } as const;
+
   return (
     <div className="movie-card__wrap movie-card__translate-top">
       <div className="movie-card__info">
-        <Poster film={film} mod={`big`} />
+        <Poster film={film} mode={'big'} />
         <div className="movie-card__desc">
           <FilmInfoMenu current={currentInfoTab} />
-          {currentInfoTab === FilmInfoTabs[0] && <FilmOverview film={film} />}
-          {currentInfoTab === FilmInfoTabs[1] && <FilmDetails film={film} />}
-          {currentInfoTab === FilmInfoTabs[2]
-           && <FilmReviewsContainer id={film.id} backgroundColor={film.backgroundColor}/>}
+          {Tabs[currentInfoTab]}
         </div>
       </div>
     </div>

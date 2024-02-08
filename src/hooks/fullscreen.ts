@@ -66,13 +66,13 @@ const useFullScreen = () => {
       }
     }
 
-    document.addEventListener(`fullscreenchange`, syncIsFullState);
+    document.addEventListener('fullscreenchange', syncIsFullState);
 
     return () => {
       if (isFull) {
         document.exitFullscreen();
       }
-      document.removeEventListener(`fullscreenchange`, syncIsFullState);
+      document.removeEventListener('fullscreenchange', syncIsFullState);
       if (controlsTimer) {
         clearTimeout(controlsTimer);
       }

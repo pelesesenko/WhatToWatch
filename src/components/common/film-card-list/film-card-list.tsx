@@ -5,13 +5,10 @@ interface Props {
   ids: number[],
 }
 
-const FilmCardList:FC<Props> = ({ids}) => {
-
-  return (
-    <div className="catalog__movies-list">
-      {ids.map((id) => <FilmCard id={id} key={id} />)}
-    </div>
-  );
-};
+const FilmCardList:FC<Props> = ({ids}) => (
+  <div className="catalog__movies-list">
+    {ids.map((id) => <FilmCard id={id} key={id} />)}
+  </div>
+);
 
 export default FilmCardList;

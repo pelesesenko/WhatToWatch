@@ -18,7 +18,7 @@ export const initialState: State = {
 
 
 const favFilmsSlice = createSlice({
-  name: `fav-films`,
+  name: 'fav-films',
   initialState,
   reducers: {},
   extraReducers(builder) {

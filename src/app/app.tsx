@@ -14,21 +14,21 @@ import './app.css';
 import {selectAuthStatus} from '../store/user/selectors';
 
 const MyList = React.lazy(() => import(
-    /* webpackChunkName: "my-list" */
-    /* webpackMode: "lazy" */
-    `../components/pages/my-list/my-list`));
+  /* webpackChunkName: "my-list" */
+  /* webpackMode: "lazy" */
+  '../components/pages/my-list/my-list'));
 const Login = React.lazy(() => import(
-    /* webpackChunkName: "login" */
-    /* webpackMode: "lazy" */
-    `../components/pages/login/login`));
-const AddReview = React.lazy(() => import(
-    /* webpackChunkName: "add-review" */
-    /* webpackMode: "lazy" */
-    `../components/pages/add-review/add-review`));
-const Player = React.lazy(() => import(
-    /* webpackChunkName: "player" */
-    /* webpackMode: "lazy" */
-    `../components/pages/player/player`));
+  /* webpackChunkName: "login" */
+  /* webpackMode: "lazy" */
+  '../components/pages/login/login'));
+const WithExtractIdAddReview = React.lazy(() => import(
+  /* webpackChunkName: "add-review" */
+  /* webpackMode: "lazy" */
+  '../components/pages/add-review/add-review'));
+const WithExtractIdPlayer = React.lazy(() => import(
+  /* webpackChunkName: "player" */
+  /* webpackMode: "lazy" */
+  '../components/pages/player/player'));
 
 const App: FC = () => {
   const dispatch = useAppDispatch();
@@ -47,9 +47,9 @@ const App: FC = () => {
       <Suspense fallback={<Preloader/>}>
         <Switch>
           <PrivateRoute path={AppPaths.MY_LIST} exact render={()=> <MyList />} />
-          <PrivateRoute path={AppPaths.ADD_REVIEW} exact render={()=> <AddReview />} />
+          <PrivateRoute path={AppPaths.ADD_REVIEW} exact render={()=> <WithExtractIdAddReview />} />
           <Route path={AppPaths.LOGIN} exact component={Login} />
-          <Route path={AppPaths.PLAYER} exact component={Player} />
+          <Route path={AppPaths.PLAYER} exact component={WithExtractIdPlayer} />
           <Route path={AppPaths.NOT_FOUND} exact component={NotFound} />
           <Route path={AppPaths.MAIN} component={FilmsContainer} />
           <Route>

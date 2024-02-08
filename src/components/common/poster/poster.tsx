@@ -7,19 +7,19 @@ import {addIdParam} from '../../../utils';
 interface Props {
   film: Film;
   withLink?: true;
-  mod? : `big` | `small`;
+  mode? : 'big' | 'small';
 }
 
-const Poster:FC<Props> = ({film, withLink, mod}) => {
+const Poster:FC<Props> = ({film, withLink, mode}) => {
 
-  const extraClass = mod ? ` movie-card__poster--` + mod : ``;
+  const modifier = mode ? ` movie-card__poster--${mode}` : '';
 
   const img = <img src={film.posterImage} alt={`${film.name} poster`} width={218} height={327} />;
 
   const child = withLink ? <Link to={addIdParam(AppPaths.FILM, film.id)}>{img}</Link> : img;
 
   return (
-    <div className={`movie-card__poster` + extraClass}>
+    <div className={`movie-card__poster${modifier}`}>
       {child}
     </div>
   );

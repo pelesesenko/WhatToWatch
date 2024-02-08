@@ -26,8 +26,7 @@ const Logo:FC<Props> = ({withLink}) => {
         :
         <a className="logo__link logo__link--light">
           {logo}
-        </a>
-      }
+        </a>}
     </div>
   );
 };

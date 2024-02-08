@@ -54,9 +54,7 @@ const Player:FC<Props> = ({id}) => {
     }
   }, [film]);
 
-  React.useEffect(() => {
-    return () => playerBackUrl.clear();
-  }, []);
+  React.useEffect(() => () => playerBackUrl.clear(), []);
 
   const onPlayClick = () => {
     if (isPlaying) {
@@ -83,89 +81,87 @@ const Player:FC<Props> = ({id}) => {
 
   const playIconProps = isPlaying ? IconProps.pause : IconProps.play;
   const fullIconProps = isFull ? IconProps.exitFullScreen : IconProps.fullScreen;
-  const hiding = isControls ? `` : ` ` + styles.hidden;
-  const noCursor = isControls ? `` : ` ` + styles.cursorNone;
+  const hiding = isControls ? '' : ` ${styles.hidden}`;
+  const noCursor = isControls ? '' : ` ${styles.cursorNone}`;
+
+  if(!film) {
+    return (
+      <div className={styles.loading}>
+        <Header page={Pages.ADD_REVIEW} />
+        <Preloader />
+      </div>
+    );
+  }
 
   return (
-    <>
-      {!film
-        ? <>
-          <div className={styles.loading}>
-            <Header page={Pages.ADD_REVIEW} />
-            <Preloader />
-          </div>
-        </>
-        : <div className="player"
-          onMouseMove={onWrapperMouseMove}
-          onMouseUp={onWrapperMouseUp}
-        >
-          <video poster="img/player-poster.jpg" width='160' height='90'
-            className={`player__video${noCursor}`}
-            src={film.videoLink}
-            autoPlay
-            ref={playerRef}
-            onTimeUpdate={onTimeUpdate}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          />
-          <button type="button"
-            className={`player__exit ${styles.unselectable}${hiding}`}
-            onClick={onExitClick}
+    <div className="player"
+      onMouseMove={onWrapperMouseMove}
+      onMouseUp={onWrapperMouseUp}
+    >
+      <video poster="img/player-poster.jpg" width='160' height='90'
+        className={`player__video${noCursor}`}
+        src={film.videoLink}
+        autoPlay
+        ref={playerRef}
+        onTimeUpdate={onTimeUpdate}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+      <button type="button"
+        className={`player__exit ${styles.unselectable}${hiding}`}
+        onClick={onExitClick}
+      >
+          Exit
+      </button>
+      <div className={`player__controls${hiding}`}>
+        <div className="player__controls-row" >
+          <div className={`player__time ${styles.time}`}
+            ref={progressRef}
+            onMouseDown={onProgressMouseDown}
+            onMouseEnter={onProgressMouseEnter}
+            onMouseMove={onProgressMouseMove}
+            onMouseLeave={onProgressMouseLeave}
           >
-              Exit
-          </button>
-          <div className={`player__controls${hiding}`}>
-            <div className="player__controls-row" >
-              <div className={`player__time ${styles.time}`}
-                ref={progressRef}
-                onMouseDown={onProgressMouseDown}
-                onMouseEnter={onProgressMouseEnter}
-                onMouseMove={onProgressMouseMove}
-                onMouseLeave={onProgressMouseLeave}
+            {tip.is &&
+              <span className={`${styles.tip} ${styles.unselectable}`}
+                style={{left: `${(tip.x / progressCoord.width) * 100}%`}}
+                onDragStart={(e) =>e.preventDefault()}
+                draggable={false}
               >
-                {tip.is &&
-                  <span className={`${styles.tip} ${styles.unselectable}`}
-                    style={{left: `${(tip.x / progressCoord.width) * 100}%`}}
-                    onDragStart={(e) =>e.preventDefault()}
-                    draggable={false}
-                  >
-                    {tipTime}
-                  </span>
-                }
-                <progress className="player__progress" value={progressValue} max={100} />
-                <div className={`player__toggler ${styles.unselectable}`}
-                  style={{left: `${progressValue}%`}}
-                  onDragStart={(e) =>e.preventDefault()}
-                  draggable={false}
-                >
-                  Toggler
-                </div>
-              </div>
-              <div className={`player__time-value ${styles.unselectable}`}>
-                {timeLeft}
-              </div>
+                {tipTime}
+              </span>}
+            <progress className="player__progress" value={progressValue} max={100} />
+            <div className={`player__toggler ${styles.unselectable}`}
+              style={{left: `${progressValue}%`}}
+              onDragStart={(e) =>e.preventDefault()}
+              draggable={false}
+            >
+              Toggler
             </div>
-            <div className="player__controls-row">
-              <button type="button" className="player__play"
-                onClick={onPlayClick}
-              >
-                <Icon {...playIconProps} />
-                <span>{isPlaying ? `Pause` : `Play`}</span>
-              </button>
-              <div className={`player__name ${styles.unselectable}`}>
-                Transpotting
-              </div>
-              <button type="button" className="player__full-screen"
-                onClick={onFullClick}
-              >
-                <Icon {...fullIconProps} />
-                <span>Full screen</span>
-              </button>
-            </div>
+          </div>
+          <div className={`player__time-value ${styles.unselectable}`}>
+            {timeLeft}
           </div>
         </div>
-      }
-    </>
+        <div className="player__controls-row">
+          <button type="button" className="player__play"
+            onClick={onPlayClick}
+          >
+            <Icon {...playIconProps} />
+            <span>{isPlaying ? 'Pause' : 'Play'}</span>
+          </button>
+          <div className={`player__name ${styles.unselectable}`}>
+            Transpotting
+          </div>
+          <button type="button" className="player__full-screen"
+            onClick={onFullClick}
+          >
+            <Icon {...fullIconProps} />
+            <span>Full screen</span>
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 

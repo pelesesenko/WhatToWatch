@@ -30,8 +30,7 @@ const UserBlock:FC = () => {
           <LogoutBtn onClick={onLogout} />
         </>
         :
-        <Link onClick={onSignIn} to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>
-      }
+        <Link onClick={onSignIn} to={AppPaths.LOGIN} className="user-block__link">Sign in</Link>}
     </div>
   );
 };

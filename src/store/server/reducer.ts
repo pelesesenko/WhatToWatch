@@ -10,14 +10,14 @@ const initialState: State = {
 };
 
 const serverSlice = createSlice({
-  name: `server`,
+  name: 'server',
   initialState,
   reducers: {},
   extraReducers(builder) {
     builder
-    .addCase(serverAvailabilityChecked, (state, action) => {
-      state.isAvailable = action.payload;
-    });
+      .addCase(serverAvailabilityChecked, (state, action) => {
+        state.isAvailable = action.payload;
+      });
   }
 });
 

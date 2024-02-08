@@ -1,7 +1,7 @@
 import axios, {AxiosResponse} from 'axios';
 import {adaptSnakeToCamel} from '../utils';
 
-const BACKEND_URL = `https://6.react.pages.academy/wtw`;
+const BACKEND_URL = 'https://6.react.htmlacademy.pro/wtw';
 const TIMEOUT = 5000;
 
 const httpClient = axios.create({

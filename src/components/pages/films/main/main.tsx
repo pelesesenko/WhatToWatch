@@ -19,12 +19,11 @@ const Main1:FC = () => {
     }
   }, [promoId]);
 
+  const mainHeaderOrPreloader = promoId ? <MainHeader promoId={promoId} /> : <Preloader />;
+
   return (
     <>
-      {promoId
-        ? <MainHeader promoId={promoId} />
-        : <Preloader />
-      }
+      {mainHeaderOrPreloader}
       <div className="page-content">
         <MainCatalog />
         <Footer main />
