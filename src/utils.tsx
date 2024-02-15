@@ -120,3 +120,5 @@ export const formatStarring = (film: Film): (string | JSX.Element)[] => film.sta
     : name
 ));
 
+export const secureLink = (httpLink: string):string => httpLink.replace('http://', 'https://');
+
