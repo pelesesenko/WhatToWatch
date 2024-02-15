@@ -4,7 +4,7 @@ import {AppPaths, Pages} from '../../../constants';
 import withExtractIdParam from '../../../hocs/withExtractIdParam';
 import useLoadFilmById from '../../../hooks/load-film-by-id';
 import useFullScreen from '../../../hooks/fullscreen';
-import {throttle, formatTime} from '../../../utils';
+import {throttle, formatTime, secureLink} from '../../../utils';
 import Header from '../../common/header/header';
 import Icon, {IconProps} from '../../common/icon/icon';
 import Preloader from '../../common/preloader/preloader';
@@ -100,7 +100,7 @@ const Player:FC<Props> = ({id}) => {
     >
       <video poster="img/player-poster.jpg" width='160' height='90'
         className={`player__video${noCursor}`}
-        src={film.videoLink}
+        src={secureLink(film.videoLink)}
         autoPlay
         ref={playerRef}
         onTimeUpdate={onTimeUpdate}
